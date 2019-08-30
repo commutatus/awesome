@@ -1,4 +1,4 @@
-Here is the documentation to follow installing travis to your project!
+Here is the documentation to set up CI with Travis and Rollbar to your project!
 
 Add this line to your Gemfile:
 **gem 'travis'**
@@ -35,11 +35,13 @@ This is how travis.yml file should look
 	- redis-server
 	deploy:
 	- provider: cloud66
-	  redeployment_hook: "Enter you hook url"
+	  redeployment_hook:
+	  	secure: place your encrypted key
 	  on:
 	    branch: staging
 	- provider: cloud66
-	  redeployment_hook: "Enter you hook url"
+	  redeployment_hook:
+	  	secure: place your encrypted key 
 	  on:
 	    branch: master
 	branches:
@@ -47,7 +49,7 @@ This is how travis.yml file should look
 	  - master
 	  - staging
 
-**Rollbar deploy tracking feature via travis**
+**Rollbar deploy tracking feature via Travis**
 To keep track of deployements in rollbar, add the code to your travis.yml file
 
 	after_deploy:
