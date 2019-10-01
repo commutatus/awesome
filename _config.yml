@@ -1,1 +1,8 @@
 theme: jekyll-theme-minimal
+collections:
+  - domains
+  - principles
+  - standards
+  - operations
+  - automations
+collections_dir: my_collections
