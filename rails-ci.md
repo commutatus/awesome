@@ -14,7 +14,7 @@ create a file called **config/database.yml.travis** and place the code
 
 	test:
 	  adapter: postgresql
-	  database: database_name
+	  database: travis_ci_test
 
 This is how travis.yml file should look
 
