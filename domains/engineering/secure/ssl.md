@@ -27,6 +27,8 @@ SSL can be configured on a rails stack from cloud66 console using the following 
  
 - ***ANGULAR*** 
 
+- ***DNS***
+
 
 
 ----
