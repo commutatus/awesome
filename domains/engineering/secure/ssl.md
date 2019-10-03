@@ -7,16 +7,29 @@
 
 Following are the ways we apply SSL in various frameworks.
 
------
+- ***RAILS***
 
-- Rails (backend)
+SSL can be configured on a rails stack from cloud66 console using the following steps.
 
-SSL can be configured on a rails application from the cloud66 console with the following steps.
-path: "assets/cloud66_app_page.png"
-{:.collapsable}
+1. On the stack page, add an `Add-In` from the Add-Ins menu.
 
-- React (frontend)
-- Angular (frontend)
+	[![add-ins page](/assets/images/add-ins-c66.png)](/assets/images/add-ins-c66.png)
+
+2. Find the `SSL` add-in in the networking menu and click `INSTALL NOW`.
+
+3. In the `New SSL Certificate Information` select LetsEncrypt. 
+
+4. Enter the allowed domains (complete domain name) and click `Add LetsEncrypt SSL`.
+
+	[![certificate page](/assets/images/domain-name-ssl-c66.png)](/assets/images/domain-name-ssl-c66.png)
+
+- ***REACT***
+ 
+- ***ANGULAR*** 
+
+
 
 ----
+
+
 Supplementary resources - 
