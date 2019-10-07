@@ -43,19 +43,21 @@ SSL can be configured on a rails stack from cloud66 console using the following 
 
   3. On **ACM** page select **Provision certificates**.
 
-  4. Keep the default selection checked *(Request a public certificate)* and click on **Request a certificate** button.![ssl-creation-request](/assets/images/elb-ssl-creation-request.png)
+  4. Keep the default selection checked *(Request a public certificate)* and click on **Request a certificate** button.
+      [![ssl-creation-request](/assets/images/elb-ssl-creation-request.png)](/assets/images/elb-ssl-creation-request.png)
 
   5. Add the full domain name you have purchased and click **Next**.
 
-     ![add-domain](/assets/images/elb-ssl-creation-add-domain.png)
+     [![add-domain](/assets/images/elb-ssl-creation-add-domain.png)](/assets/images/elb-ssl-creation-add-domain.png)
 
   6. In the **Select Validation method,** select **DNS Validation** and click on **Review**.
 
-     ![Select validation method](/assets/images/elb-ssl-creation-validation-method.png)
+     [![Select validation method](/assets/images/elb-ssl-creation-validation-method.png)](/assets/images/elb-ssl-creation-validation-method.png)
 
   7. Review the selected values for **Domain name** and **Validation** and click **Confirm and request button**.
 
-  8. This takes some time around 5–10 minutes to issued by Amazon. By the time you can Add the highlighted `CNAME` record values to the DNS configuration for your domain and click **Continue**.![CNAME Records](/assets/images/elb-ssl-creation-cname-records.png)
+  8. This takes some time around 5–10 minutes to issued by Amazon. By the time you can Add the highlighted `CNAME` record values to the DNS configuration for your domain and click **Continue**.
+     [![CNAME Records](/assets/images/elb-ssl-creation-cname-records.png)](/assets/images/elb-ssl-creation-cname-records.png)
 
      **NOTE: — Adding CNAME records, you have to add to the DNS provider platform.**
 
@@ -65,36 +67,35 @@ SSL can be configured on a rails stack from cloud66 console using the following 
 
   2. On the left panel of the **EC2** page, under **Load balancing,** select **Load Balancers.**
 
-     ![LB selection](/assets/images/elb-goto-load-balancers-page.png)
+     [![LB selection](/assets/images/elb-goto-load-balancers-page.png)](/assets/images/elb-goto-load-balancers-page.png)
 
-  3.  Select your desired environment *(if multiple),* and under **Listeners** tab click **Add Listener.**
+  3.  Select your desired environment *(if multiple),* and under **Listeners** tab click **Add Listener**.
 
-     ![Add listener](/assets/images/elb-lb-add-listener.png)
+     [![Add listener](/assets/images/elb-lb-add-listener.png)](/assets/images/elb-lb-add-listener.png)
 
   4. Change the protocol and port to **HTTPS** and **443** respectively. Then under the **Default action(s)** section, click **+ add action** and select **Forward to…** option and select your application name and click the **☑** button. After that select the **default SSL certificate** from the drop and click on the **Save** button at the top.
 
-     ![HTTPS forwarding](/assets/images/elb-lb-https-forward.png)
+     [![HTTPS forwarding](/assets/images/elb-lb-https-forward.png)](/assets/images/elb-lb-https-forward.png)
 
      **By doing this, anybody who visits the `https://<your_domain>.<extension>` URL will forwards to our Angular application under HTTPS protocol. But what if someone comes to `http://` URL of our application? For this, we have to redirect our traffic to `https://` . We will see it in next steps below:**
 
   5. For the same environment, again under the **Listener’s** tab, select the **HTTP** option and click the **Edit** button.
 
-     ![HTTP Edit config](/assets/images/elb-lb-http-edit.png)
+     [![HTTP Edit config](/assets/images/elb-lb-http-edit.png)](/assets/images/elb-lb-http-edit.png)
 
   6. Here you don’t have to change the protocol, instead, you just have to add the default action(s) as **Redirect to…** and fill port number as **443** next to HTTPS dropdown > click on **☑** button > click on **Update.**
 
-     ![Redirect http to https](/assets/images/elb-lb-https-redirect.png)
+     [![Redirect http to https](/assets/images/elb-lb-https-redirect.png)](/assets/images/elb-lb-https-redirect.png)
 
   7. Stay on the same page and from left pane under the **Network & Security** heading select, **Security groups.**
 
   8. Select one instance of EC2 > Choose **Inbound** > Click **Edit** *(popup opens) >* Click **Add rule** > Select **HTTPS** from the dropdown > Click **Save**.
 
-     ![Adding rules to inbound traffic](/assets/images/elb-lb-add-rules-security-grps.png)
+     [![Adding rules to inbound traffic](/assets/images/elb-lb-add-rules-security-grps.png)](/assets/images/elb-lb-add-rules-security-grps.png)
 
-  9. Repeat **step 8** for other instances as well. Wait for a while around 10mins maybe and then check `your_domain.ext` it should work!
+  9. Repeat **step 8** for other instances as well. Wait for a while around 10 minutes maybe and then check `your_domain.ext` it should work!
 
      
-
 
 - ***DNS***
 
