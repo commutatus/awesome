@@ -59,7 +59,7 @@ SSL can be configured on a rails stack from cloud66 console using the following 
   8. This takes some time around 5–10 minutes to issued by Amazon. By the time you can Add the highlighted `CNAME` record values to the DNS configuration for your domain and click **Continue**.
      [![CNAME Records](/assets/images/elb-ssl-creation-cname-records.png)](/assets/images/elb-ssl-creation-cname-records.png)
 
-     **NOTE: — Adding CNAME records, you have to add to the DNS provider platform.**
+     **NOTE: — Adding CNAME records, you have to add to the DNS provider platform. This might get automatically done if your domain is hosted on Route 53**
 
   #### II. Adding SSL to Load Balancers
 
