@@ -1,9 +1,10 @@
-[Domains and Principles](/principles)/ Engineering/ [Secure](/domains/engineering/secure/info)/ [SSL](/domains/engineering/secure/ssl)
-
 ---
-<br>
-<br>
-*Secure Sockets Layer* (**SSL**) is a protocol developed by Netscape for transmitting private documents via the Internet. SSL uses a cryptographic system that uses two keys to encrypt data − a public key known to everyone and a private or secret key known only to the recipient of the message. 
+title: SSL
+nav_order: 2
+parent: Secure
+grand_parent: Engineering
+---
+*Secure Sockets Layer* (**SSL**) is a protocol developed by Netscape for transmitting private documents via the Internet. SSL uses a cryptographic system that uses two keys to encrypt data − a public key known to everyone and a private or secret key known only to the recipient of the message.
 
 Following are the ways we apply SSL in various frameworks.
 
@@ -17,7 +18,7 @@ SSL can be configured on a rails stack from cloud66 console using the following 
 
 2. Find the `SSL` add-in in the networking menu and click `INSTALL NOW`.
 
-3. In the `New SSL Certificate Information` select LetsEncrypt. 
+3. In the `New SSL Certificate Information` select LetsEncrypt.
 
 4. Enter the allowed domains (complete domain name) and click `Add LetsEncrypt SSL`.
 
@@ -31,7 +32,7 @@ SSL can be configured on a rails stack from cloud66 console using the following 
 
   2. Configuring SSL to your load balancers.
 
-     
+
 
   You will need an AWS account for this. If you don’t have, create one.
 
@@ -95,7 +96,7 @@ SSL can be configured on a rails stack from cloud66 console using the following 
 
   9. Repeat **step 8** for other instances as well. Wait for a while around 10 minutes maybe and then check `your_domain.ext` it should work!
 
-     
+
 
 - ***DNS***
 
@@ -104,4 +105,4 @@ SSL can be configured on a rails stack from cloud66 console using the following 
 ----
 
 
-Supplementary resources - 
+Supplementary resources -

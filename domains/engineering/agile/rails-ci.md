@@ -1,3 +1,9 @@
+---
+title: Rollbar and Travis integration
+nav_order: 1
+parent: Agile
+grand_parent: Engineering
+---
 Here is the documentation to set up CI with Travis and Rollbar to your project!
 
 Add this line to your Gemfile:
@@ -41,7 +47,7 @@ This is how travis.yml file should look
 	    branch: staging
 	- provider: cloud66
 	  redeployment_hook:
-	  	secure: place your encrypted key 
+	  	secure: place your encrypted key
 	  on:
 	    branch: master
 	branches:
