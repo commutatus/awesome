@@ -29,7 +29,7 @@ This repository contains the documentation for the framework in addition to host
 
 **Third Party Tools**
 
-
+- There are no third party tools used yet.
 
 ---
 
