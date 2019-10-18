@@ -1,4 +1,9 @@
-[Domains and Principles](/principles)/ Engineering/ [Secure](/domains/engineering/secure/info)/ [AWS Credentials](/domains/engineering/secure/aws-credentials)
+---
+title: AWS credential management
+nav_order: 2
+parent: Secure
+grand_parent: Engineering
+---
 
 Managing AWS credentials in an organized and secure fashion is very important specially when working on multiple client projects across multiple AWS accounts.
 

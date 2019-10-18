@@ -12,7 +12,7 @@ Here is the set of principles that we follow in everything that we do!
 - Efficient
 - Agile
 - Well documented
-- [Secure](/domains/engineering/secure/info)
+- [Secure](/domains/engineering/secure)
 - Open source by design
 
 **Design**
