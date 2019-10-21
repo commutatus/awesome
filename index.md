@@ -11,7 +11,7 @@ Here is the set of principles that we follow in everything that we do!
 
 - Efficient
 - Agile
-- Well documented
+- [Well documented](/domains/engineering/well-documented)
 - [Secure](/domains/engineering/secure)
 - Open source by design
 
