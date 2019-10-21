@@ -1,4 +1,10 @@
-[Domains and Principles](/principles)/ Engineering/ [Well Documented](/domains/engineering/well-documented/info)/ [Readme](/domains/engineering/well-documented/readme)
+---
+title: Readme files
+nav_order: 2
+parent: Well documented
+grand_parent: Engineering
+---
+
 
 All repositories should have a very well documented readme which provide the following information to the reader - 
 
