@@ -73,9 +73,11 @@ We can add our master key to the cloud66 as an environment variables.
 1. Click on `Configuration` in the right side of the cloud66 dashboard.
 2. Under the `Environment Variables` tab you can find `+ Add new variable` click on this to add your custom environment variables
 3. Enter your master key name and its value
+
 	Example
-		Key `RAILS_MASTER_KEY`
-		Value `f322f4eab45b202e2123e160eeffser1`
+
+		Key = RAILS_MASTER_KEY
+		Value = f322f4eab45b202e2123e160eeffser1
 4. Place this master key inside your `config/credentials/production.yml` file to encrypt and decrypt credentials.
 
 **Note**
