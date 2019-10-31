@@ -53,7 +53,9 @@ This repository contains the documentation for the framework in addition to host
 
 **Running locally**
 
-- To run this project in localhost, use `bundle exec jekyll serve`
+- To run this project in localhost, do the following:
+- `bundle install`
+- `bundle exec jekyll serve`
 
 ---
 
