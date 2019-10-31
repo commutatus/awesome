@@ -10,7 +10,16 @@ Steps to score an A+ security rating from Mozilla Observatory:
 
 - **REACT/ANGULAR**
 
-1. As the first step, Enfore **HTTPS**! Always make sure to add a redirection rule from HTTP to HTTPS.
+1. As the first step, Enfore **HTTPS**! Always make sure to add a redirection rule from HTTP to HTTPS. If your application is running on AWS-load balancer, enfore HTTPS on load balancer or if it's hosted elsewhere, add the following code in your app server.
+
+    ```
+    app.use(function (req, res, next) {
+        if (!req.secure && (process.env.NODE_ENV === `production`) {
+            res.redirect("https://" + req.headers.host + req.url)
+        } 
+        else return next();
+    });
+    ```
 
 2. Next, we are going to use [HELMET](https://helmetjs.github.io/) for increasing the rating. Go to your project, and do `npm i helmet`.
 

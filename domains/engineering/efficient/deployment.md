@@ -5,7 +5,7 @@ parent: Efficient
 grand_parent: Engineering
 ---
 
-- ***\*******Elastic Beanstalk - Angular\*******\***
+- ***Elastic Beanstalk - Angular***
 
 1. Create an AWS account if you don’t have one. Log-in and go to [AWS Console](https://console.aws.amazon.com/). Click on **Services** menu > Select **Elastic Beanstalk** under **Compute** heading.
 
@@ -39,7 +39,7 @@ grand_parent: Engineering
 
    [![Capacity screen](/assets/images/deploy-elb-capacity.png)](/assets/images/deploy-elb-capacity.png)
 
-   *Here I have changed the* **Environment type** *to* **Load balanced,** *and I’m keeping* **Instances** *maximum value* **1** *because this is a demo, but you might want to change it to 2–3 or more depending on your needs.*
+   *Here I have changed the* **Environment type** *to* **Load balanced,** *and I’m keeping* **Instances** *maximum value* and *minimum value* **1** *because this is a demo, but you might want to change it to 2–3 or more depending on your needs.*
 
 8. Click on **Load Balancer’s** Modify button and change the type to [**Application Load Balancer**](https://searchaws.techtarget.com/definition/application-load-balancer)**.** It will help in the routing procedure for HTTP and HTTPS (protocol-based). Click on **Save.**
 
