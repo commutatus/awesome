@@ -8,7 +8,7 @@ In the older version of rails 5.2 we place all our credentials inside  `config/s
 
 **Before Using Rails Credentials**
 
-1. So before using rails credentials the main thing to remember is to add a key inside `config/credentials/production.key` 
+1. Add a key inside `config/credentials/production.key` before using rails credentials 
 
 	We can use more files based on the environment
 
@@ -18,8 +18,9 @@ In the older version of rails 5.2 we place all our credentials inside  `config/s
 		config/credentials/staging.key
 		config/credentials/development.key
 
-2. But you should save your key which you added inside the file `config/credentials/production.key` somewhere else because this is the key used to encrypt the credentials, so if we miss this key then we can't decrypt our file to edit or use the credentials inside our `config/credentials/production.yml.enc`   
-3. Then we need to keep the file `config/credentials/production.key` as secret so it should be added under `.gitignore` 
+2. Save the key that you added inside the file `config/credentials/production.key` somewhere else.
+
+	This is the key used to encrypt the credentials, so if we miss this key then we can't decrypt our file to edit or use the credentials inside our `config/credentials/production.yml.enc` 
 
 **Adding credentials**
 
