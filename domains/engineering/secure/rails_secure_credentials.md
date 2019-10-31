@@ -4,8 +4,6 @@ nav_order: 5
 parent: Secure
 grand_parent: Engineering
 ---
-Here is the documentation to use your rails crendentials securely
-
 In the older version of rails 5.2 we place all our credentials inside  `config/secrets.yml` . But later rails 5.2 and upcoming versions replaced the current config/secrets.yml into config/secrets.yml.enc
 
 **Before Using Rails Credentials**
@@ -32,7 +30,7 @@ In the older version of rails 5.2 we place all our credentials inside  `config/s
 
 	`$ EDITOR="subl --wait" rails credentials:edit`
 
-2. If your using different credentials based on environment the you should pass environment name when we running the command
+2. If you're using different credentials based on environment the you should pass environment name when we running the command
 
 		$ EDITOR="subl --wait" rails credentials:edit --environment production
 		$ EDITOR="subl --wait" rails credentials:edit --environment staging
@@ -68,6 +66,17 @@ In the older version of rails 5.2 we place all our credentials inside  `config/s
 		Rails.application.credentials.aws[:access_key_id]
 		Rails.application.credentials.dig(:aws, :access_key_id) 
 		Rails.application.credentials.dig(:secret_key_base)
+
+**Adding The Master Key On Cloud66**
+
+We can add our master key to the cloud66 as an environment variables. 
+1. Click on `Configuration` in the right side of the cloud66 dashboard.
+2. Under the `Environment Variables` tab you can find `+ Add new variable` click on this to add your custom environment variables
+3. Enter your master key name and its value
+	Example
+		Key `RAILS_MASTER_KEY`
+		Value `f322f4eab45b202e2123e160eeffser1`
+4. Place this master key inside your `config/credentials/production.yml` file to encrypt and decrypt credentials.
 
 **Note**
 1. The file will decrypt and open automatically at the time when we run the command `EDITOR="subl --wait" rails credentials:edit --environment production` to edit if the key presented inside the file `config/credentials/production.yml` was the correct one which is used before generation of `config/credentials/production.yml.enc`.
