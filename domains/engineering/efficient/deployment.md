@@ -1,7 +1,7 @@
 ---
 title: Deployment
 nav_order: 1
-parent: Efficiency
+parent: Efficient
 grand_parent: Engineering
 ---
 
@@ -55,30 +55,30 @@ grand_parent: Engineering
 
     ```yaml
     language: node_js
-    
+
     node_js:
       - 10.15.1
-    
+
     cache:
       directories:
         - node_modules
-    
+
     branches:
       only:
         - staging
         - master
-    
+
     before_script:
       - npm install
-    
+
     script:
       - if [[ "$TRAVIS_BRANCH" = "master" || "$TRAVIS_BRANCH" = "staging" ]]; then npm run build; else echo "not a build branch"; fi
-    
+
     before_deploy:
       - cd $TRAVIS_BUILD_DIR
       - sed -i '/dist/d' .gitignore
       - git add . && git commit -m "latest build"
-      
+
     deploy:
       - provider: elasticbeanstalk
         access_key_id: <YOUR_ACCESS_KEY>
@@ -90,12 +90,12 @@ grand_parent: Engineering
         bucket_name: "<S3_BUCKET_NAME>" // Once you create new application, it will automatically create a unique bucket for it.
         on:
           branch: <GIT_BRANCH_NAME> // For example: - master
-    
+
     after_deploy:
       - echo "Applcation Deployed!"
     ```
 
-    
+
 
 11. Go to **Services** > **Click on S3 under Storage heading** > **Copy the bucket name** *(as highlighted in the image)* and paste in `.yml` file.
 
