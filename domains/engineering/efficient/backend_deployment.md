@@ -43,7 +43,8 @@ worker: bundle exec sidekiq -e $RAILS_ENV
   - *Server Region* is customer dependant, get it from your team leader or the product manager.
   - *Server Size* should be `t2.micro` for staging and `t2.medium` for production
   - *Deploy PostgreSQL* should be `Shared with the Rails server` for staging and a `New cloud server` for production
-6. Click on *Deploy Application*. That's it!
+6. Click on *Deploy Application*.
+7. In the newly deployed application, add the `RAILS_MASTER_KEY` environment variable, as per [the secure credentials instructions.]({% link domains/engineering/secure/rails_secure_credentials.md %})
 
 
 ### Useful commands
