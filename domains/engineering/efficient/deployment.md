@@ -137,5 +137,3 @@ grand_parent: Engineering
     [![aws lambda console](/assets/images/aws-lambda-console.png)](/assets/images/aws-lambda-console.png)
 
     *The name of the service is appended before the function name as in the picture and the yaml file. This service name is editable.*
-
-
