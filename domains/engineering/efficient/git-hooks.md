@@ -1,6 +1,16 @@
+---
+title: Git hooks
+nav_order: 3
+parent: Efficient
+grand_parent: Engineering
+---
+
 # Git hooks templates
 
 Git hooks are scripts that run automatically every time a particular event occurs in a Git repository. They let you customize Git’s internal behavior and trigger customizable actions at key points in the development life cycle.
+
+1. ToC
+{:toc}
 
 ### How it works
 
@@ -34,15 +44,15 @@ Change the default hooks dir path
 Change the git hook directory for git > 2.9
 
     git config core.hooksPath dirname
-    
+
     e.g. git config core.hooksPath ./customHooks
 
-Note: 
+Note:
 Every member has to change git hooks dir path manually.
 
 ### How can you contribute to the project
 
-1. Create a folder if its not there. e.g. githooks<language-name> 
+1. Create a folder if its not there. e.g. githooks<language-name>
 2. Create or update the hook file.
 3. Make the file executable.
 4. Write proper comments.
