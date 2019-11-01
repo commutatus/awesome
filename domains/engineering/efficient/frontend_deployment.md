@@ -1,5 +1,5 @@
 ---
-title: Deployment
+title: Frontend Deployment
 nav_order: 1
 parent: Efficient
 grand_parent: Engineering
