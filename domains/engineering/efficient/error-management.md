@@ -1,3 +1,10 @@
+---
+title: Error Management
+nav_order: 1
+parent: Efficient
+grand_parent: Engineering
+---
+
 Error Management
 
 It's very important to have a standardised set of error codes and messages in a platform to ensure that the frontend and backend are aligned on how to handle different situations and react accordingly. 
