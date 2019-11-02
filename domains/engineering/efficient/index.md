@@ -4,4 +4,4 @@ nav_order: 2
 has_children: true
 parent: Engineering
 ---
-Our processes are well thought out, documented and easily extensible.
+Efficiency is defined as achieving maximum productivity with minimum wasted effort or expense and working in a well-organized, competent way.
