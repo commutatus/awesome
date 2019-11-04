@@ -16,7 +16,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
     app.use(function (req, res, next) {
         if (!req.secure && (process.env.NODE_ENV === `production`) {
             res.redirect("https://" + req.headers.host + req.url)
-        } 
+        }
         else return next();
     });
     ```
@@ -74,7 +74,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
     ```
     Make the above changes for **Angular** in `server/app.ts` file.
 
-6. The above configuration will block all external sources except resources from the same origin. Whitelist the sources you want to load as follows: 
+6. The above configuration will block all external sources except resources from the same origin. Whitelist the sources you want to load as follows:
 
     [![content-security-policy-source-reference](/assets/images/content-security-policy-source-reference.png)](/assets/images/content-security-policy-source-reference.png)
 
@@ -96,9 +96,114 @@ Steps to score an A+ security rating from Mozilla Observatory:
 
 - **RAILS**
 
----
+1. Content Security Policy
+   -  For RAILS 5.2 and higher go to `config/content_security_policy.rb` file and add
+    ```
+      Rails.application.config.content_security_policy do |policy|
+        policy.default_src :none
+        policy.font_src    :self
+        policy.img_src     :self
+        policy.object_src  :none
+        policy.script_src  :self
+        policy.style_src   :self
+        policy.report_uri "/csp-violation-report-endpoint"
+      end
+    ```
+      If you want data from a specific url:-
+    ```
+      Rails.application.config.content_security_policy do |p|
+        ....   
+        p.img_src 'url', :http
+        ...
+      end
+    ```
+   - For RAILS version lower than 5.2 use gem [Secure_Headers](https://www.rubydoc.info/gems/secure_headers/3.6.3).
 
+2. Cookies
+    - For securing cookies in your rails application go to `config/environments/production.rb` file and add `config.force_ssl
+    = true`.
 
+3. Cross-origin Resource Sharing
+   - add `gem 'rack-cors'` into your gemfile
+   - if you are using Rails 3/4 add below code to `config/application.rb` file
+    ```
+    config.middleware.insert_before 0, "Rack::Cors" do
+        allow do
+          origins '*'
+          resource '*', headers: :any, methods: [:get, :post, :options]
+        end
+    end
+    ```
+   - if you are using Rails 5 add below code to `config/application.rb` file if you are using Rails 5
+    ```
+    config.middleware.insert_before 0, Rack::Cors do
+        allow do
+          origins '*'
+          resource '*', headers: :any, methods: [:get, :post, :options]
+        end
+    end
+    ```
+    - Origins can be specified as a string, a regular expression, or as `*` to allow all origins.
+    - Resource options:-
+       - methods (string or array): The HTTP methods allowed for the resource.
+       - headers (string or array or :any): The HTTP headers that will be allowed in the CORS resource request. Use :any to   allow for any headers in the actual request.
+       - expose (string or array): The HTTP headers in the resource response can can be exposed to the client.
+       - credentials (boolean): Sets the Access-Control-Allow-Credentials response header.
+       - max_age (number): Sets the Access-Control-Max-Age response header.
+       - if (Proc): If the result of the proc is true, will process the request as a valid CORS request.
+       - vary (string or array): A list of HTTP headers to add to the ‘Vary’ header
+
+4. HTTP Strict Transport Security
+  - For HSTS in your rails application `config/environments/production.rb` file add `config.force_ssl = true`.
+
+5. Redirection
+  - For redirecting from bad urls in your application `config/environments/production.rb`  file add `config.force_ssl = true`.
+
+6. Referrer Policy
+  - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
+  - In `config/environments/production.rb` file add
+   ```
+    Rails.application.configure do
+      config.action_dispatch.default_headers = {
+            'Referrer-Policy' => 'strict-origin-when-cross-origin'
+      }
+    end
+   ```
+
+7.  X-Content-Type-Options
+  - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
+  - In `config/environments/production.rb` file add
+  ```
+    Rails.application.configure do
+      config.action_dispatch.default_headers = {
+            'X-Content-Type-Options' => 'nosniff'
+      }
+    end
+  ```
+
+8.  X-Frame-Options
+  - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
+  - In `config/environments/production.rb` file add
+  ```
+    Rails.application.configure do
+      config.action_dispatch.default_headers = {
+            'X-Frame-Options' => 'SAMEORIGIN'
+      }
+    end
+  ```
+
+9.   X-XSS-Protection
+  - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
+  - In `config/environments/production.rb` file add
+  ```
+    Rails.application.configure do
+      config.action_dispatch.default_headers = {
+            'X-XSS-Protection' => '1; mode=block'
+      }
+    end
+  ```
+
+  ---
 
 Supplementary resources:
 
