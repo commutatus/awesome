@@ -143,15 +143,6 @@ Steps to score an A+ security rating from Mozilla Observatory:
         end
     end
     ```
-    - Origins can be specified as a string, a regular expression, or as `*` to allow all origins.
-    - Resource options:-
-       - methods (string or array): The HTTP methods allowed for the resource.
-       - headers (string or array or :any): The HTTP headers that will be allowed in the CORS resource request. Use :any to   allow for any headers in the actual request.
-       - expose (string or array): The HTTP headers in the resource response can can be exposed to the client.
-       - credentials (boolean): Sets the Access-Control-Allow-Credentials response header.
-       - max_age (number): Sets the Access-Control-Max-Age response header.
-       - if (Proc): If the result of the proc is true, will process the request as a valid CORS request.
-       - vary (string or array): A list of HTTP headers to add to the ‘Vary’ header
 
 4. HTTP Strict Transport Security
   - For HSTS in your rails application `config/environments/production.rb` file add `config.force_ssl = true`.
