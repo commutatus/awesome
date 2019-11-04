@@ -37,7 +37,7 @@ worker: bundle exec sidekiq -e $RAILS_ENV
 3. Select the branch, the environment, and the application name. Conventions to follow are:
   - `staging` branch will go to the `Staging` environment, `master` branch will go to the `Production` environment
   - The application name will be in `Title Case` and end with `API` for backend applications. The environment name is not needed.
-4. Click on `Analize Application` and wait for a couple minutes
+4. Click on `Analyze Application` and wait for a couple minutes
 5. Configure the deployment servers that will be used. Take into account:
   - At *Cloud Provider*, select the customer's cloud account. If it doesn't appear there, add it or contact your team leader
   - *Server Region* is customer dependant, get it from your team leader or the product manager.
