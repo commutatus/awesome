@@ -98,7 +98,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
 
 1. Content Security Policy
    -  For RAILS 5.2 and higher go to `config/content_security_policy.rb` file and add
-    ```
+    ```ruby
       Rails.application.config.content_security_policy do |policy|
         policy.default_src :none
         policy.font_src    :self
@@ -110,7 +110,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
       end
     ```
       If you want data from a specific url:-
-    ```
+    ```ruby
       Rails.application.config.content_security_policy do |p|
         ....   
         p.img_src 'url', :http
@@ -126,7 +126,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
 3. Cross-origin Resource Sharing
    - add `gem 'rack-cors'` into your gemfile
    - if you are using Rails 3/4 add below code to `config/application.rb` file
-    ```
+    ```ruby
     config.middleware.insert_before 0, "Rack::Cors" do
         allow do
           origins '*'
@@ -135,7 +135,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
     end
     ```
    - if you are using Rails 5 add below code to `config/application.rb` file if you are using Rails 5
-    ```
+    ```ruby
     config.middleware.insert_before 0, Rack::Cors do
         allow do
           origins '*'
@@ -153,7 +153,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
 6. Referrer Policy
   - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
   - In `config/environments/production.rb` file add
-   ```
+   ```ruby
     Rails.application.configure do
       config.action_dispatch.default_headers = {
             'Referrer-Policy' => 'strict-origin-when-cross-origin'
@@ -164,7 +164,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
 7.  X-Content-Type-Options
   - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
   - In `config/environments/production.rb` file add
-  ```
+  ```ruby
     Rails.application.configure do
       config.action_dispatch.default_headers = {
             'X-Content-Type-Options' => 'nosniff'
@@ -175,7 +175,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
 8.  X-Frame-Options
   - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
   - In `config/environments/production.rb` file add
-  ```
+  ```ruby
     Rails.application.configure do
       config.action_dispatch.default_headers = {
             'X-Frame-Options' => 'SAMEORIGIN'
@@ -186,7 +186,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
 9.   X-XSS-Protection
   - In Rails applications, security headers can be set in either `config/application.rb` or in specific `config/environments/` files.
   - In `config/environments/production.rb` file add
-  ```
+  ```ruby
     Rails.application.configure do
       config.action_dispatch.default_headers = {
             'X-XSS-Protection' => '1; mode=block'
