@@ -143,6 +143,17 @@ Steps to score an A+ security rating from Mozilla Observatory:
         end
     end
     ```
+   - On production site we should only add the UI domain as the origin whereas in staging it can be "*".
+     ```ruby
+     config.middleware.insert_before 0, Rack::Cors do
+         allow do
+         origins 'www.xyz.com', '127.0.0.1:3000',
+          /\Ahttp:\/\/192\.168\.0\.\d{1,3}(:\d+)?\z/
+          # regular expressions can be used here
+           resource '*', headers: :any, methods: [:get, :post, :options]
+         end
+     end
+     ```
 
 4. HTTP Strict Transport Security
   - For HSTS in your rails application `config/environments/production.rb` file add `config.force_ssl = true`.
