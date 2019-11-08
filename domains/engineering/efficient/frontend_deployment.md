@@ -5,7 +5,7 @@ parent: Efficient
 grand_parent: Engineering
 ---
 
-- ***Elastic Beanstalk - Angular***
+- ## ***Elastic Beanstalk - Angular***
 
 1. Create an AWS account if you don’t have one. Log-in and go to [AWS Console](https://console.aws.amazon.com/). Click on **Services** menu > Select **Elastic Beanstalk** under **Compute** heading.
 
@@ -102,3 +102,69 @@ grand_parent: Engineering
     [![Final s3 bucket](/assets/images/deploy-elb-bucket-final.png)](/assets/images/deploy-elb-bucket-final.png)
 
 12. Make commit and push your changes of `.travis.yml` file to the master branch. This will trigger a build, and once it is successful, the application will automatically be deployed to the URL, I have mentioned above.
+
+
+
+
+
+- ## ***Heroku - Angular***
+
+#### Configure Heroku
+
+1. Sign up/Log in to [Heroku](https://www.heroku.com/) and on the dashboard screen click **New** button and select **Create new app** top right.
+
+   ![](C:\Users\yash\Desktop\deploy-heroku-dashboard.png)
+
+2. Give a name to your application and select the one of the **available region** from the dropdown and click **Create** **app**.
+
+   ![](C:\Users\yash\Desktop\deploy-heroku-create-app.png)
+
+3. Since your project repo is on [GitHub](https://www.github.com/), click **GitHub** and under the organisation name select **Commutatus** and search for your project repository and click **Connect**.
+
+   ![](C:\Users\yash\Desktop\deploy-heroku-connect-github.png)
+
+
+
+4. Select the branch you want to deploy and then click on **Enable Automatic Deploys** for future auto deployments. But for the first, select the branch and click **Deploy Branch**.
+
+   ![](C:\Users\yash\Desktop\deploy-heroku-deploy-master.png)
+
+5. After deployment is successful, Heroku will generate a link to your application. For example *https://awesome--app.herokuapp.com*. This link will show **Application Error** for now.
+
+#### Configure your Angular application
+
+1. In your Angular application, open `package.json` file and copy `@angular/cli: <version>`,  `"@angular/compiler-cli": <version>` and `"typescript": <version>` from `devDependencies` to `dependencies` .
+
+2. Create a postinstall script in your `package.json` under `script` section and paste `"postinstall": "ng build --aot -prod"`.
+
+3. Now for Heroku to run your application we need to tell Heroku for node environment engines. Copy and paste the below code under `"devDependencies"` object.
+
+   ```json
+     "engines": {
+       "node": "<same version of your machine>",
+       "npm": "<same version of your machine>"
+     }
+   ```
+
+4. Install server to run your application. For production be need an express server. Run `npm i express path --save` in your code.
+
+5. Create a **server.js** file in the **root** of your application and paste the code below.
+
+   ```javascript
+   const express = require('express');
+   const path = require('path');
+   const app = express();
+   
+   // Serve only the static files from the dist folder
+   app.use(express.static(__dirname + '/dist/<name-of-app>'));
+   app.get('/*', function(req,res) {
+     res.sendFile(path.join(__dirname+'/dist/<name-of-app>/index.html'));
+   });
+   
+   // Start the app by listening on the default Heroku port
+   app.listen(process.env.PORT || 8080);
+   ```
+
+6. In your **package.json** change the `"start"` command to `"node server.js"`.
+
+7. Add your changes to GIT and push to your remote GIT origin. After the build is successful open the link.
