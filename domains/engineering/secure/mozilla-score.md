@@ -109,7 +109,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
         policy.report_uri "/csp-violation-report-endpoint"
       end
     ```
-      If you want data from a specific url :-
+      If you want data from a specific url as well as self :-
     ```ruby
       Rails.application.config.content_security_policy do |p|
         ....   
