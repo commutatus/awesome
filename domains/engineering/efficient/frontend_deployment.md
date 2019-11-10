@@ -113,7 +113,7 @@ grand_parent: Engineering
 ## AWS S3
 ### Creating S3 Bucket
 - Go to [AWS S3 Console](https://s3.console.aws.amazon.com/s3/home?region=eu-west-2#)
-- Click on Create Bucket and enter a bucket name which should be the EXACT same name as the domain you want to deploy at. Let us assume you want to deploy the app on `awesome.commutatus.com` so we write the bucket name as `awesome.commutatus.com`. Now select the region which is closest to most of your target audience. Click Next.
+- Click on Create Bucket and enter a bucket name which should be the EXACT same name as the domain you want to deploy to. Let us assume you want to deploy the app on `awesome.commutatus.com` so we write the bucket name as `awesome.commutatus.com`. Now select the region which is closest to most of your target audience. Click Next.
 [![Create Bucket First Step](/assets/images/s3-deployments/s3-deployment-1.png)](/assets/images/s3-deployments/s3-deployment-1.png)
 - Click Next on the second step, on the third step make sure the `Block all public access` is unchecked and click next. The last screen should look like this and then you can click on `Create Bucket`
 [![Create Bucket Last Step](/assets/images/s3-deployments/s3-deployment-2.png)](/assets/images/s3-deployments/s3-deployment-2.png)
@@ -138,7 +138,7 @@ The endpoint you see `http://awesome.commutatus.com.s3-website.ap-south-1.amazon
 ```
 Make sure you replace the name with your bucket name in the `Resource` field. After doing this, click on `Save`
 Your bucket is all set to serve your app! Now we need to push in our code to this bucket.
-### Deploying the app to the bucket
+### Deploying our app to the bucket
 -  We'll be using travis in order to push changes to our bucket. If you don't have a travis file already you can start off with this one
 ````
 language:  node_js
@@ -173,7 +173,7 @@ a master branch"; fi
 
 before_deploy:
 
-# This step is done to remove the dist directory from gitignore otherwise it is ignore by travis for deployment
+# This step is done to remove the dist directory from gitignore otherwise it is ignored by travis for deployment
 
 -  cd $TRAVIS_BUILD_DIR
 
@@ -207,7 +207,7 @@ after_deploy:
 
 # You can write your after deploy scripts here like invalidating cdn caches
 ````
-You can take this as a boiler plate for travis but what  we are mostly interested is in the `deploy` script.  The script will deploy the dist folder and also delete what was earlier being deployed in order to avoid any unnecessary cluttering of the bucket. If everything goes fine, you can head back to the s3 url you receive and should see your app running!
+You can take this as a boiler plate for travis but what  we are mostly interested is in the `deploy` script.  The script will deploy the dist folder and also delete what was earlier being deployed in order to avoid any unnecessary cluttering of the bucket. Your `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should be defined in your travis settings. If everything goes fine, you can head back to the s3 url you receive and should see your app running!
 - We have deployed the app but there's a problem here, s3 does not support https, hence in order to make our app support https, we have to serve it via Cloudfront. This will also ensure that the data is loaded efficiently.
 ### Creating an SSL Certificate
 - Before creating a Cloudfront Distribution, we'll need an SSL certificate that we can hook up to our cloudfront to make it https ready. 
@@ -233,11 +233,11 @@ You can take this as a boiler plate for travis but what  we are mostly intereste
 d1sjyp0cxacal8.cloudfront.net`, open that link in your browser and check if that works.
 
 - Now the last step is to route our domain `awesome.commutatus.com` to our Cloudfront domain which was `  
-d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. And if everything goes well, your app should be available on `awesome.commutatus.com`
+d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. And if everything goes well, your app should be available at `awesome.commutatus.com`
 
 ### Automatically invalidating cdn caches
 
-- There's one last step, since our app is served on a cdn, any updates we push would not get propagated immediately unless we invalidate the cache of the cdn. In order to overcome this we need to invalidate the cdn cache after every deployment. You can add this script in the `after_deploy` section of your travis file, this will make sure our caches are invalidated after the deployments.
+- There's one last step, since our app is served via a cdn, any updates we push would not get propagated immediately unless we invalidate the cache of the cdn. In order to overcome this we need to invalidate the cdn cache after every deployment. You can add this script in the `after_deploy` section of your travis file, this will make sure our caches are invalidated after the deployments.
 ```````yaml
 - if [ "$TRAVIS_BRANCH" = "master" ]; then aws cloudfront create-invalidation --distribution-id EJBDNDTRY39BS --paths "/*"; else echo "not a master branch for invalidation"; fi
 ```````
