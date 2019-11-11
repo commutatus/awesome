@@ -113,21 +113,21 @@ grand_parent: Engineering
 
 1. Sign up/Log in to [Heroku](https://www.heroku.com/) and on the dashboard screen click **New** button and select **Create new app** top right.
 
-   ![](C:\Users\yash\Desktop\deploy-heroku-dashboard.png)
+   [![Heroku dashboard](/assets/images/deploy-heroku-dashboard.png)](/assets/images/deploy-heroku-dashboard.png)
 
 2. Give a name to your application and select the one of the **available region** from the dropdown and click **Create** **app**.
 
-   ![](C:\Users\yash\Desktop\deploy-heroku-create-app.png)
+   [![Create app](/assets/images/deploy-heroku-create-app.png)](/assets/images/deploy-heroku-create-app.png)
 
 3. Since your project repo is on [GitHub](https://www.github.com/), click **GitHub** and under the organisation name select **Commutatus** and search for your project repository and click **Connect**.
 
-   ![](C:\Users\yash\Desktop\deploy-heroku-connect-github.png)
+   [![Heroku - GitHub connect](/assets/images/deploy-heroku-connect-github.png)](/assets/images/deploy-heroku-connect-github.png)
 
 
 
 4. Select the branch you want to deploy and then click on **Enable Automatic Deploys** for future auto deployments. But for the first, select the branch and click **Deploy Branch**.
 
-   ![](C:\Users\yash\Desktop\deploy-heroku-deploy-master.png)
+   [![Auto deployment settings](/assets/images/deploy-heroku-deploy-master.png)](/assets/images/deploy-heroku-deploy-master.png)
 
 5. After deployment is successful, Heroku will generate a link to your application. For example *https://awesome--app.herokuapp.com*. This link will show **Application Error** for now.
 
