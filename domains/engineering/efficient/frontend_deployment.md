@@ -271,11 +271,10 @@ d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. 
 
 ### Configure your Angular application
 
-1. In your Angular application, open `package.json` file and copy `@angular/cli: <version>`,  `"@angular/compiler-cli": <version>` and `"typescript": <version>` from `devDependencies` to `dependencies` .
 
-2. Create a postinstall script in your `package.json` under `script` section and paste `"postinstall": "ng build --aot -prod"`.
+1. In your Angular application, open `package.json` file, create a postinstall script in your `package.json` under `script` section and paste `"postinstall": "ng build --aot -prod"`.
 
-3. Now for Heroku to run your application we need to tell Heroku for node environment engines. Copy and paste the below code under `"devDependencies"` object.
+2. Now for Heroku to run your application we need to tell Heroku for node environment engines. Copy and paste the below code below `"devDependencies"` object.
 
    ```json
      "engines": {
@@ -284,9 +283,9 @@ d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. 
      }
    ```
 
-4. Install server to run your application. For production be need an express server. Run `npm i express path --save` in your code.
+3. Install server to run your application. For production be need an express server. Run `npm i express path --save` in your code.
 
-5. Create a **server.js** file in the **root** of your application and paste the code below.
+4. Create a **server.js** file in the **root** of your application and paste the code below.
 
    ```javascript
    const express = require('express');
@@ -303,6 +302,6 @@ d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. 
    app.listen(process.env.PORT || 8080);
    ```
 
-6. In your **package.json** change the `"start"` command to `"node server.js"`.
+5. In your **package.json** change the `"start"` command to `"node server.js"`.
 
-7. Add your changes to GIT and push to your remote GIT origin. After the build is successful open the link.
+6. Add your changes to GIT and push to your remote GIT origin. After the build is successful open the link.
