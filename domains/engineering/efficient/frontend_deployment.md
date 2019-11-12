@@ -258,14 +258,15 @@ d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. 
 3. Since your project repo is on [GitHub](https://www.github.com/), click **GitHub** and under the organisation name select **Commutatus** and search for your project repository and click **Connect**.
 
    [![Heroku - GitHub connect](/assets/images/deploy-heroku-connect-github.png)](/assets/images/deploy-heroku-connect-github.png)
-
-
-
+   
 4. Select the branch you want to deploy and then click on **Enable Automatic Deploys** for future auto deployments. But for the first, select the branch and click **Deploy Branch**.
 
    [![Auto deployment settings](/assets/images/deploy-heroku-deploy-master.png)](/assets/images/deploy-heroku-deploy-master.png)
 
 5. After deployment is successful, Heroku will generate a link to your application. For example *https://awesome--app.herokuapp.com*. This link will show **Application Error** for now.
+
+6. In case if you want to configure *Environment variables* for your application. Goto **Settings** tab > **Config Vars** add environment variable as key-value pair.
+    [![Environment variable](/assets/images/deploy-heroku-env.png)](/assets/images/deploy-heroku-env.png)
 
 ### Configure your Angular application
 
