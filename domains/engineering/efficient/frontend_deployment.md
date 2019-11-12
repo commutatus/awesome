@@ -242,3 +242,66 @@ d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. 
 - if [ "$TRAVIS_BRANCH" = "master" ]; then aws cloudfront create-invalidation --distribution-id EJBDNDTRY39BS --paths "/*"; else echo "not a master branch for invalidation"; fi
 ```````
 - You can find the `distribution-id` in your Cloudfront distribution page.
+
+## Heroku - Angular
+
+### Configure Heroku
+
+1. Sign up/Log in to [Heroku](https://www.heroku.com/) and on the dashboard screen click **New** button and select **Create new app** top right.
+
+   [![Heroku dashboard](/assets/images/deploy-heroku-dashboard.png)](/assets/images/deploy-heroku-dashboard.png)
+
+2. Give a name to your application and select the one of the **available region** from the dropdown and click **Create** **app**.
+
+   [![Create app](/assets/images/deploy-heroku-create-app.png)](/assets/images/deploy-heroku-create-app.png)
+
+3. Since your project repo is on [GitHub](https://www.github.com/), click **GitHub** and under the organisation name select **Commutatus** and search for your project repository and click **Connect**.
+
+   [![Heroku - GitHub connect](/assets/images/deploy-heroku-connect-github.png)](/assets/images/deploy-heroku-connect-github.png)
+   
+4. Select the branch you want to deploy and then click on **Enable Automatic Deploys** for future auto deployments. But for the first, select the branch and click **Deploy Branch**.
+
+   [![Auto deployment settings](/assets/images/deploy-heroku-deploy-master.png)](/assets/images/deploy-heroku-deploy-master.png)
+
+5. After deployment is successful, Heroku will generate a link to your application. For example *https://awesome--app.herokuapp.com*. This link will show **Application Error** for now.
+
+6. In case if you want to configure *Environment variables* for your application. Goto **Settings** tab > **Config Vars** add environment variable as key-value pair.
+
+    [![Environment variable](/assets/images/deploy-heroku-env.png)](/assets/images/deploy-heroku-env.png)
+
+### Configure your Angular application
+
+
+1. In your Angular application, open `package.json` file, create a postinstall script in your `package.json` under `script` section and paste `"postinstall": "ng build --aot -prod"`.
+
+2. Now for Heroku to run your application we need to tell Heroku for node environment engines. Copy and paste the below code below `"devDependencies"` object.
+
+   ```json
+     "engines": {
+       "node": "<same version of your machine>",
+       "npm": "<same version of your machine>"
+     }
+   ```
+
+3. Install server to run your application. For production be need an express server. Run `npm i express path --save` in your code.
+
+4. Create a **server.js** file in the **root** of your application and paste the code below.
+
+   ```javascript
+   const express = require('express');
+   const path = require('path');
+   const app = express();
+   
+   // Serve only the static files from the dist folder
+   app.use(express.static(__dirname + '/dist/<name-of-app>'));
+   app.get('/*', function(req,res) {
+     res.sendFile(path.join(__dirname+'/dist/<name-of-app>/index.html'));
+   });
+   
+   // Start the app by listening on the default Heroku port
+   app.listen(process.env.PORT || 8080);
+   ```
+
+5. In your **package.json** change the `"start"` command to `"node server.js"`.
+
+6. Add your changes to GIT and push to your remote GIT origin. After the build is successful open the link.
