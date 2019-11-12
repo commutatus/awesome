@@ -266,6 +266,7 @@ d1sjyp0cxacal8.cloudfront.net`. This will take another 2-60 mins approximately. 
 5. After deployment is successful, Heroku will generate a link to your application. For example *https://awesome--app.herokuapp.com*. This link will show **Application Error** for now.
 
 6. In case if you want to configure *Environment variables* for your application. Goto **Settings** tab > **Config Vars** add environment variable as key-value pair.
+
     [![Environment variable](/assets/images/deploy-heroku-env.png)](/assets/images/deploy-heroku-env.png)
 
 ### Configure your Angular application
