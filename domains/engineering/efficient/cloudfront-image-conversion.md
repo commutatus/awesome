@@ -318,3 +318,8 @@ Now the deployment takes around 20 mins. After which if you hit the cloudfront U
 
 1. After deployment if S3 images are not accessbile even after policy, Enable the read permission for everyone.
 2. S3 URL with + and space have been handled here.
+
+### TODO
+
+1. Dimension Support
+2. Script to automate the whole process. Can be cloudformation or shell.
