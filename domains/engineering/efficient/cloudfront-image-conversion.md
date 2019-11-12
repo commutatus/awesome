@@ -25,13 +25,13 @@ I followed the step by step section mentioned in the AWS blog.
 
 
 ### Step 1: Creating the Deployment Packages
-First create a project folder, I named it docker-sharp . I created a Docker file inside it. I also created the same folder structure as explained.
+First create a project folder, I named it image-optimization-service . I created a Docker file inside it. I also created the same folder structure as explained.
 Find the code repo [here](https://github.com/commutatus/cloudfront-lambda-image-optimization)
 ```
-docker-sharp  # This is the root folder
-docker-sharp → lambda → viewer-request-function → handler.js
-docker-sharp → lambda → origin-response-function → handler.js
-docker-sharp → Dockerfile
+image-optimization-service  # This is the root folder
+image-optimization-service → lambda → viewer-request-function → handler.js
+image-optimization-service → lambda → origin-response-function → handler.js
+image-optimization-service → Dockerfile
 ```
 Dockerfile
 ```
@@ -50,7 +50,7 @@ RUN source ~/.bashrc && nvm install 10.0
 WORKDIR /build
  ```
 
-docker-sharp → lambda → viewer-request-function → handler.js
+image-optimization-service → lambda → viewer-request-function → handler.js
 ```
 const userAgent = require('useragent')
 const path = require('path')
@@ -90,7 +90,7 @@ exports.handler = async (event, context, callback) => {
 }
 ```
 
-docker-sharp → lambda → origin-response-function → handler.js
+image-optimization-service → lambda → origin-response-function → handler.js
 ```
 const path = require('path')
 const AWS = require('aws-sdk')
@@ -155,7 +155,7 @@ exports.handler = async (event, context, callback) => {
  }
 ```
 ### Step 2: Building docker
-Change directory to `docker-sharp` thats the root of the project.
+Change directory to `image-optimization-service` thats the root of the project.
 
 From project root folder, run the following commands:
 
@@ -201,7 +201,7 @@ Resources:
   ViewerRequestFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://docker-sharp/viewer-request-function-1.zip
+      CodeUri: s3://image-optimization-service/viewer-request-function-1.zip
       Handler: handler.handler
       Runtime: nodejs10.x
       MemorySize: 128
@@ -217,7 +217,7 @@ Resources:
   OriginResponseFunction:
    Type: AWS::Serverless::Function
    Properties:
-     CodeUri: s3://docker-sharp/origin-response-function-1.zip
+     CodeUri: s3://image-optimization-service/origin-response-function-1.zip
      Handler: handler.handler
      Runtime: nodejs10.x
      MemorySize: 512
