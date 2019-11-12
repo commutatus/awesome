@@ -113,7 +113,7 @@ Steps to score an A+ security rating from Mozilla Observatory:
     ```ruby
       Rails.application.config.content_security_policy do |p|
         ....   
-        p.img_src :self, 'url', :http
+        p.img_src :self, 'url', :https
         ...
       end
     ```
