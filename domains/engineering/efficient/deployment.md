@@ -105,7 +105,7 @@ grand_parent: Engineering
 
 - ***Serverless - AWS***
 
-1. Prerequisites - aws credentials must exist in `~/.aws/credentials` or a path which needs to be referred when the application is deployed. 
+1. Prerequisites - aws credentials must exist in `~/.aws/credentials` or a path which needs to be referred when the application is deployed. Here is how you can [manage aws credentials](https://awesome.commutatus.com/domains/engineering/secure/aws-credentials.html){:target="_blank"}
 
 2. An AWS CloudFormation template is created from the `serverless.yml` file. In case a stack has not been created then it would be created upon deployment using only s3 resources where all the code will be zipped and stored.
 
