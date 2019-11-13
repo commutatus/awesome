@@ -10,13 +10,14 @@ grand_parent: Engineering
 
 2. Generate a model for the database. This model file will have the type and configuration of storage, database, encryption, compression, notifier etc. for the database. 
 
-`backup generate:model --trigger <model name> \
-    --databases="postgresql" --storages="s3"  \
-    --encryptor="gpg" --compressor="gzip" --notifiers="slack"`
+	`backup generate:model --trigger <model name> \
+	    --databases="postgresql" --storages="s3"  \
+	    --encryptor="gpg" --compressor="gzip" --notifiers="slack"`
 
-Refer [this page](https://backup.github.io/backup/v4/generator/) for a detailed overview about the types of customizations available. You can omit any configuration that you don't need here on the command above.  
+	Refer [this page](https://backup.github.io/backup/v4/generator/) for a detailed overview about the types of customizations available. You can omit any configuration that you don't need here on the command above.  
 
 	
+	```ruby
 	Model.new(:caif_backup, 'Backup for staging of caif') do
 		database PostgreSQL do |db|
 	    db.name               = ENV["POSTGRESQL_DATABASE"]
@@ -50,8 +51,9 @@ Refer [this page](https://backup.github.io/backup/v4/generator/) for a detailed 
 	    slack.webhook_url = ENV["backup_bot_slack_webhook"]
 	  end
 	end
+	```
 
-This is how a demo model file looks. All the variables in this particular file are being fetched from the OS' environment variables (these were set through cloud66). There can be alternative ways to fetch these variables. The name, username and password of the database will be available on cloud66 (refer image below). A bucket was created to store these backups. A slack application was created to integrate a bot who sends the status of a backup. 
+	This is how a demo model file looks. All the variables in this particular file are being fetched from the OS' environment variables (these were set through cloud66). There can be alternative ways to fetch these variables. The name, username and password of the database will be available on cloud66 (refer image below). A bucket was created to store these backups. A slack application was created to integrate a bot who sends the status of a backup. 
 
 3. A unix-cron job that runs at a particular time in the day will let us generate continuous backups. The crontab can be updated manually or using the `whenever` gem. [Check here](https://github.com/javan/whenever) to see how to set up whenever gem. 
 
