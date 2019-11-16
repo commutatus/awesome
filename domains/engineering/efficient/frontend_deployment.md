@@ -87,15 +87,14 @@ grand_parent: Engineering
 
     deploy:
       - provider: elasticbeanstalk
-        access_key_id: <YOUR_ACCESS_KEY>
-        secret_access_key:
-          secure: <YOUR_SECRET_ACCESS_KEY>
+        access_key_id: ${AWS_ACCESS_KEY_ID}             // You have use environment variable name instead of plain text
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}     // You have use environment variable name instead of plain text
         region: "<HOSTING_REGION>"            // "ap-south-1"
         app: "<APP_NAME>"                     // "demo-application"
         env: "<ENV_NAME>"                     // "demo-production"
         bucket_name: "<S3_BUCKET_NAME>" // Once you create new application, it will automatically create a unique bucket for it.
         on:
-          branch: <GIT_BRANCH_NAME> // For example: - master
+          branch: "<GIT_BRANCH_NAME>" // For example- master
 
     after_deploy:
       - echo "Applcation Deployed!"
