@@ -16,6 +16,7 @@ grand_parent: Engineering
 
       provider:
         name: aws
+        stage: dev
         runtime: ruby2.5
         timeout: 300
        
