@@ -1,0 +1,62 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/**/*'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'spec/**/*'
+    - 'lib/templates/**/*'
+
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods # allows for private and protected methods to be indented
+
+Layout/AlignHash:
+  Enabled: false # There are instances where we may not want that rule, like when we align all hash values to make it look like a table
+
+# ALL the numbers under metrics should be decided by us. These are very important, as enforcing them requires breaking down
+# large methods/classes/etc into smaller chunks, which leads to code modularization/abstraction and better quality in general
+Metrics/AbcSize:
+  Max: 30 # Al the numbers under metrics should be decided
+Metrics/BlockLength:
+  Exclude:
+    - 'config/**/*'
+    - 'app/graphql/**/*'
+    - 'app/models/concerns/**/*'
+  Max: 25 # default: 25
+Metrics/LineLength:
+  Max: 240 # default: 80 - default may be too restrictive, 240 may be too much, but we should still try to set *some* limit
+Metrics/ClassLength:
+  Max: 150 # default: 100 - some controllers and models can be bigger
+Metrics/MethodLength:
+  Max: 30
+Metrics/ModuleLength:
+  Max: 150 # default: 100 - some concerns can be bigger
+Metrics/ParameterLists:
+  Max: 5 # default: 5
+Metrics/PerceivedComplexity:
+  Max: 7 # default: 7
+
+Style/AndOr:
+  Enabled: false # We can enforce to use always either `||` `&&` or `and` `or`. Or let the devs choose.
+Style/Not:
+  Enabled: false # Same as above
+Style/ClassAndModuleChildren:
+  Enabled: false # It forces to always use the nested notation for modules inside classes, which rails doesn't do by default
+Style/NumericLiterals:
+  Enabled: false # This cop enforces western style notation (thousands -> millions -> billions) instead of Indian style (thousands -> lakhs -> crores)
+Style/StringLiterals:
+  Enabled: false # stops checks on single or doble quotes
+Style/SymbolArray:
+  Enabled: false # There are way too many cases where it's undesirable, like controller actions, permitted params or method params
+Style/WordArray:
+  Enabled: false # Similar as above
+Style/EmptyMethod:
+  Enabled: false # I don't have any strong feelings one way or the other, but we should be enforcing a style
+Style/Documentation:
+  Enabled: false # We have to do this some time. Not now, would take too much effort at the beginning
+
+Rails/FilePath:
+  Enabled: false # Not needed: https://stackoverflow.com/questions/48026807/why-does-rubocops-rails-filepath-cop-recommend-rails-root-join
