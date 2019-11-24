@@ -8,9 +8,6 @@ grand_parent: Engineering
 
 Following are the ways we apply SSL in various frameworks.
 
-1. TOC
-{:toc}
-
 # Rails
 
 SSL can be configured on a rails stack from cloud66 console using the following steps.
