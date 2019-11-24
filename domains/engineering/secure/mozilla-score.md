@@ -8,89 +8,93 @@ In order to help webmasters better protect their websites and users, Mozilla has
 
 Steps to score an A+ security rating from Mozilla Observatory:
 
-- **REACT/ANGULAR**
+<details markdown="1">
+  <summary>REACT/ANGULAR</summary>
+  {:.pointer}
+  1. As the first step, Enfore **HTTPS**! Always make sure to add a redirection rule from HTTP to HTTPS. If your application is running on AWS-load balancer, enfore HTTPS on load balancer or if it's hosted elsewhere, add the following code in your app server.
 
-1. As the first step, Enfore **HTTPS**! Always make sure to add a redirection rule from HTTP to HTTPS. If your application is running on AWS-load balancer, enfore HTTPS on load balancer or if it's hosted elsewhere, add the following code in your app server.
+      ```
+      app.use(function (req, res, next) {
+          if (!req.secure && (process.env.NODE_ENV === `production`) {
+              res.redirect("https://" + req.headers.host + req.url)
+          }
+          else return next();
+      });
+      ```
 
-    ```
-    app.use(function (req, res, next) {
-        if (!req.secure && (process.env.NODE_ENV === `production`) {
-            res.redirect("https://" + req.headers.host + req.url)
-        }
-        else return next();
-    });
-    ```
+  2. Next, we are going to use [HELMET](https://helmetjs.github.io/) for increasing the rating. Go to your project, and do `npm i helmet`.
 
-2. Next, we are going to use [HELMET](https://helmetjs.github.io/) for increasing the rating. Go to your project, and do `npm i helmet`.
+  3. For **React**, In the `server.js` file, import `helmet` and use it with your app. Make sure to use helmet before handling any custom routes.
 
-3. For **React**, In the `server.js` file, import `helmet` and use it with your app. Make sure to use helmet before handling any custom routes.
+      ```
+      const express = require('express')
+      const helmet = require('helmet')
+      const app = express()
+      const port = process.env.PORT || 3000
 
-    ```
-    const express = require('express')
-    const helmet = require('helmet')
-    const app = express()
-    const port = process.env.PORT || 3000
+      app.use(helmet())
 
-    app.use(helmet())
-
-    ...other configuration
+      ...other configuration
 
 
-    app.listen(port, () => {
-    console.log(`Running on port : ${port}`)
-    })
-    ```
-    For **Angular**, In `server/app.ts` file, import `helmet` before handling any custom routes.
+      app.listen(port, () => {
+      console.log(`Running on port : ${port}`)
+      })
+      ```
+      For **Angular**, In `server/app.ts` file, import `helmet` before handling any custom routes.
 
-    ```
-    import * as helmet from 'helmet';
+      ```
+      import * as helmet from 'helmet';
 
-    app.use(helmet());
-    ```
+      app.use(helmet());
+      ```
 
-4. Helmet with default configuration will increase the security rating from **F** to **B**. We need to do one more thing to score an **A+** which is to implement CSP ([Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)).
+  4. Helmet with default configuration will increase the security rating from **F** to **B**. We need to do one more thing to score an **A+** which is to implement CSP ([Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)).
 
-5. For **React**, Just below the `app.use(helmet())` line in the `server.js` file, add the following:
+  5. For **React**, Just below the `app.use(helmet())` line in the `server.js` file, add the following:
 
-    ```
-    app.use(
-        helmet({
-            contentSecurityPolicy: {
-                directives: {
-                scriptSrc: ["'self'"]
-                baseUri: ["'self'"],
-                objectSrc: ["'self'"],
-                styleSrc: ["'self'"],
-                fontSrc: ["'self'"],
-                frameAncestors: ["'self'"],
-                defaultSrc: ["'self'"],
-                connectSrc: ["'self'"],
-                imgSrc: ["'self'"],
-                formAction: ["'self'"]
-                }
-            }
-        })
-    )
-    ```
-    Make the above changes for **Angular** in `server/app.ts` file.
+      ```
+      app.use(
+          helmet({
+              contentSecurityPolicy: {
+                  directives: {
+                  scriptSrc: ["'self'"]
+                  baseUri: ["'self'"],
+                  objectSrc: ["'self'"],
+                  styleSrc: ["'self'"],
+                  fontSrc: ["'self'"],
+                  frameAncestors: ["'self'"],
+                  defaultSrc: ["'self'"],
+                  connectSrc: ["'self'"],
+                  imgSrc: ["'self'"],
+                  formAction: ["'self'"]
+                  }
+              }
+          })
+      )
+      ```
+      Make the above changes for **Angular** in `server/app.ts` file.
 
-6. The above configuration will block all external sources except resources from the same origin. Whitelist the sources you want to load as follows:
+  6. The above configuration will block all external sources except resources from the same origin. Whitelist the sources you want to load as follows:
 
-    [![content-security-policy-source-reference](/assets/images/content-security-policy-source-reference.png)](/assets/images/content-security-policy-source-reference.png)
+      [![content-security-policy-source-reference](/assets/images/content-security-policy-source-reference.png)](/assets/images/content-security-policy-source-reference.png)
 
-    An example of production configuration for `styleSrc` and `connectSrc` would be:
+      An example of production configuration for `styleSrc` and `connectSrc` would be:
 
-    ```
-    //allow styles to load from same origin, google and cloudfront.
-    styleSrc: ["'self'",'https://fonts.googleapis.com','https://*.cloudfront.net']
+      ```
+      //allow styles to load from same origin, google and cloudfront.
+      styleSrc: ["'self'",'https://fonts.googleapis.com','https://*.cloudfront.net']
 
-    //allow content to load from same origin and c66.
-    connectSrc: ["'self'", 'http://*.c66.me/graphql']
+      //allow content to load from same origin and c66.
+      connectSrc: ["'self'", 'http://*.c66.me/graphql']
 
-    ```
-7. Re-run the mozilla observatory test and you should now see an **A+**
+      ```
+  7. Re-run the mozilla observatory test and you should now see an **A+**
 
-    [![mozilla-observatory-max-score](/assets/images/mozilla-observatory-max-score.png)](/assets/images/mozilla-observatory-max-score.png)
+      [![mozilla-observatory-max-score](/assets/images/mozilla-observatory-max-score.png)](/assets/images/mozilla-observatory-max-score.png)
+  {:.pl-7}
+</details>
+{:.pl-4}
 
 ---
 
