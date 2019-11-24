@@ -23,17 +23,16 @@ SSL can be configured on a rails stack from cloud66 console using the following 
 </details>
 {:.pl-4}
 
-# Elastic Beanstalk - NodeJS
-
+<details markdown="1">
+<summary>Elastic Beanstalk - NodeJS</summary>
+{:.pointer}
 Configuring SSL to NodeJS application deployed on Application Load Balanced AWS Elastic Beanstalk application. This will be done in 2 parts. These are:
-
+{:.pl-4}
 1. Creating an SSL certificate using AWS Certificate Manager (ACM).
-
 2. Configuring SSL to your load balancers.
-
-
-
+{:.pl-7}
 You will need an AWS account for this. If you don’t have, create one.
+{:.pl-4}
 
 #### I. Creating a certificate
 
@@ -96,6 +95,8 @@ You will need an AWS account for this. If you don’t have, create one.
 9. Repeat **step 8** for other instances as well. Wait for a while around 10 minutes maybe and then check `your_domain.ext` it should work!
 
 
+</details>
+{:.pl-4}
 
 - ***DNS***
 
