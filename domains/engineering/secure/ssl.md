@@ -34,33 +34,25 @@ Configuring SSL to NodeJS application deployed on Application Load Balanced AWS 
 You will need an AWS account for this. If you don’t have, create one.
 {:.pl-4}
 
-#### I. Creating a certificate
-
+<details class="pl-4" markdown="1">
+<summary>Creating a certificate</summary>
+{:.pointer}
 1. Login to **AWS console**.
-
 2. Click on the **Services** option on the top left corner, then under **Security, Identity, & Compliance** heading go to **Certificate Manager**.
-
 3. On **ACM** page select **Provision certificates**.
-
 4. Keep the default selection checked *(Request a public certificate)* and click on **Request a certificate** button.
     [![ssl-creation-request](/assets/images/elb-ssl-creation-request.png)](/assets/images/elb-ssl-creation-request.png)
-
 5. Add the full domain name you have purchased and click **Next**.
-
-   [![add-domain](/assets/images/elb-ssl-creation-add-domain.png)](/assets/images/elb-ssl-creation-add-domain.png)
-
+    [![add-domain](/assets/images/elb-ssl-creation-add-domain.png)](/assets/images/elb-ssl-creation-add-domain.png)
 6. In the **Select Validation method,** select **DNS Validation** and click on **Review**.
-
-   [![Select validation method](/assets/images/elb-ssl-creation-validation-method.png)](/assets/images/elb-ssl-creation-validation-method.png)
-
+    [![Select validation method](/assets/images/elb-ssl-creation-validation-method.png)](/assets/images/elb-ssl-creation-validation-method.png)
 7. Review the selected values for **Domain name** and **Validation** and click **Confirm and request button**.
-
 8. This takes some time around 5–10 minutes to issued by Amazon. By the time you can Add the highlighted `CNAME` record values to the DNS configuration for your domain and click **Continue**.
-   [![CNAME Records](/assets/images/elb-ssl-creation-cname-records.png)](/assets/images/elb-ssl-creation-cname-records.png)
-
-   **NOTE: — Adding CNAME records, you have to add to the DNS provider platform. This might get automatically done if your domain is hosted on Route 53**
-
-#### II. Adding SSL to Load Balancers
+    [![CNAME Records](/assets/images/elb-ssl-creation-cname-records.png)](/assets/images/elb-ssl-creation-cname-records.png)
+    **NOTE: — Adding CNAME records, you have to add to the DNS provider platform. This might get automatically done if your domain is hosted on Route 53**
+{:.pl-7}
+</details>
+{:.pl-4}
 
 1.  Go to **Services** > Under **Compute** heading > Select **EC2 (Elastic Compute Cloud).**
 
