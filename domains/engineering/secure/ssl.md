@@ -8,21 +8,20 @@ grand_parent: Engineering
 
 Following are the ways we apply SSL in various frameworks.
 
-# Rails
-
+<details markdown="1">
+<summary>Rails</summary>
+{:.pointer}
 SSL can be configured on a rails stack from cloud66 console using the following steps.
-
+{:.pl-4}
 1. On the stack page, add an `Add-In` from the Add-Ins menu.
-
 	[![add-ins page](/assets/images/add-ins-c66.png)](/assets/images/add-ins-c66.png)
-
 2. Find the `SSL` add-in in the networking menu and click `INSTALL NOW`.
-
 3. In the `New SSL Certificate Information` select LetsEncrypt.
-
 4. Enter the allowed domains (complete domain name) and click `Add LetsEncrypt SSL`.
-
 	[![certificate page](/assets/images/domain-name-ssl-c66.png)](/assets/images/domain-name-ssl-c66.png)
+{:.pl-7}
+</details>
+{:.pl-4}
 
 # Elastic Beanstalk - NodeJS
 
