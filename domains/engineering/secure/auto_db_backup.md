@@ -23,20 +23,20 @@ grand_parent: Engineering
 	    db.name               = ENV["POSTGRESQL_DATABASE"]
 	    db.username           = ENV["POSTGRESQL_USERNAME"]
 	    db.password           = ENV["POSTGRESQL_PASSWORD"]
-	    db.host               = ENV["api_host_domain"]
+	    db.host               = ENV["API_HOST_DOMAIN"]
 	    db.port               = 5432
 	    db.additional_options = ["-xc", "-E=utf8"]
 		end
 
 	 	store_with S3 do |s3|
 	    # AWS Credentials
-	    s3.access_key_id     = ENV["backup_bot_aws_key"]
-	    s3.secret_access_key = ENV["backup_bot_aws_secret"]
+	    s3.access_key_id     = ENV["BACKUP_BOT_AWS_KEY"]
+	    s3.secret_access_key = ENV["BACKUP_BOT_AWS_SECRET"]
 	    # Or, to use a IAM Profile:
 	    # s3.use_iam_profile = true
 
 	    s3.region            = "ap-south-1"
-	    s3.bucket            = ENV["backup_bucket_name"]
+	    s3.bucket            = ENV["BACKUP_BUCKET_NAME"]
 	    s3.keep              = 5
 	  end
 
@@ -48,7 +48,7 @@ grand_parent: Engineering
 	    slack.on_success = true
 	    slack.on_warning = true
 	    slack.on_failure = true
-	    slack.webhook_url = ENV["backup_bot_slack_webhook"]
+	    slack.webhook_url = ENV["BACKUP_BOT_SLACK_WEBHOOK"]
 	  end
 	end
 	```
