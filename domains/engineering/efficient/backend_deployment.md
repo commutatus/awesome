@@ -45,6 +45,8 @@ worker: bundle exec sidekiq -e $RAILS_ENV
   - *Deploy PostgreSQL* should be `Shared with the Rails server` for staging and a `New cloud server` for production
 6. Click on *Deploy Application*.
 7. In the newly deployed application, add the `RAILS_MASTER_KEY` environment variable, as per [the secure credentials instructions.]({% link domains/engineering/secure/rails_secure_credentials.md %})
+8. [Add a new ssl certificate]({% link domains/engineering/secure/ssl.md %}#rails)
+9. With SSL set up, open your applications, go to `Network Settings` in the right hand menu, go to the `Redirects` tab, and select the `Redirect HTTP to HTTPS` checkmark. Click on `Apply Redirects` before you leave
 
 
 ### Useful commands
@@ -55,6 +57,3 @@ To run these commands, first install the Cloud66 toolbelt in your machine by run
 4. `cx tail -s $STACK_NAME web $LOGFILE` View real-time logs of the desired logfile. Values for `$LOGFILE` can be:
   - `staging.log / production.log`: The main Rails application log server. Choose the right name according to the server's environment
   - `nginx_error.log`: The nginx HTTP server log
-
-### Further actions
-- [Add a new ssl certificate]({% link domains/engineering/secure/ssl.md %}#rails)
