@@ -75,6 +75,8 @@ This is a document which explains how Bug Management should work in the project.
   <summary>Different statuses and their meaning</summary>
   {:.pointer}
 
+  ![different-status-meaning](/assets/images/different-status-meaning.png)
+  
   Status | Meaning
   :---: | :---
   `TO DO` | 1. Initial status of any ticket after creation.<br/> 2. The ticket has been created with all the mandatory fields filled out.
