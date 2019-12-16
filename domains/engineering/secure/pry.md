@@ -7,24 +7,25 @@ grand_parent: Engineering
 
 # Using Pry in production
 
+[Pry](http://pryrepl.org/) is better than irb for a [number of reasons](https://banisterfiend.wordpress.com/2011/01/27/turning-irb-on-its-head-with-pry/), but chief among them are that it syntax highlights input and output, and it crashes less often. Here are some simple instructions to get you started.
 
 ## 1. Include pry in the Gemfile
 
-```
+Add pry to the production part of the Gemfile.
+
+```ruby
 # Gemfile  
-  
+
 gem 'pry-rails'  
-gem 'pry-plus', group: :development
 ```
-
-Once Gemfile is changed, run bundle and then deploy. Pry will be available in production.
-
+Once you’ve changed the Gemfile, run bundle and then deploy. Pry will be available in production.
 
 ## 2. Change the prompt in production
 
-```
-# config/initializers/pry.rb
+Add a rails initializer that sets the prompt in production.
 
+```ruby
+# config/initializers/pry.rb
 # Show red environment name in pry prompt for non development environments
 unless Rails.env.development?
   old_prompt = Pry.config.prompt
@@ -36,34 +37,23 @@ unless Rails.env.development?
 end
 ```
 
-Now it’s obvious when you’re in production :).
-
-
-[![pry](/assets/images/pry.png)](/assets/images/pry.png)
-
-
 ## 3. Wrap it in a script
 
-Running pry in production is surprisingly fiddly, particularly if we’re trying to do it to answer an urgent question. We need to remember which directory to run it from, to use bundle exec, and to pass production as an argument.
+You need to remember which directory to run it from, to use bundle exec, and to pass production as an argument.
 
-To make this easier to do we added a production-console command. All it does is open pry with all the options set.
+To make this easier to do add a production-console command to your repository. All it does is open pry with all the options set.
 
-```
+```bash
 #/usr/local/bin/production-console
-
 cd /apps/bugsnag-website/current
 bundle exec rails console production
 ```
 
-
 ## 4. Designate a ‘pry’ machine
 
-The monitor machine usually spends its time doing non-critical things, like running [monit](http://mmonit.com/monit/), [graphite](http://graphite.wikidot.com/), and [cron](https://en.wikipedia.org/wiki/Cron). As some of the cron jobs we dorequire our rails codebase, production-console already worked on that machine, so it was the obvious choice.
+To ssh into the machine, have an alias defined in your ~/.zshrc that lets you run production-console on your laptop.
 
-To ensure that we don’t forget which machine to ssh into, we have an alias defined in our ~/.zshrc that lets us run production-console on our laptop.
-
-```
+```bash
 # ~/.zshrc
-
 alias production-console='ssh -t monitor zsh -l -c production-console'
 ```
