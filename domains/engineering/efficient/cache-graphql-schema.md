@@ -11,66 +11,73 @@ grand_parent: Engineering
 
 # Angular
 
-## Creating schemaQuery.ts file
+## Caching Graphql Schema for Introspection Fragment Matching
 
-1. Create a file named **schemaQuery.ts** in the **src** folder of your application and paste the code below.
+### Creating schemaQuery.ts file
 
-  ``` if (!process.env.APP_ENVIRONMENT) {
-        require('dotenv').config();
-      }
+  Create a file named **schemaQuery.ts** in the **src** folder of your application and paste the code below.
 
-      const fs = require('fs');
-      const fetchReq = require('node-fetch');
-      const env = process.env.APP_ENVIRONMENT;
-      let apiUrl = <<Staging URL>>;
+  ```
+    if (!process.env.APP_ENVIRONMENT) {
+      require('dotenv').config();
+    }
 
-      if (env === 'prod') {
-        apiUrl = <<Prod URL>>';
-      }
+    const fs = require('fs');
+    const fetchReq = require('node-fetch');
+    const env = process.env.APP_ENVIRONMENT;
+    let apiUrl = <<Staging URL>>;
 
-      fetchReq(`${apiUrl}/graphql`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          variables: {},
-          query: `
-            {
-              __schema {
-                types {
-                  kind
+    if (env === 'prod') {
+      apiUrl = <<Prod URL>>';
+    }
+
+    fetchReq(`${apiUrl}/graphql`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        variables: {},
+        query: `
+          {
+            __schema {
+              types {
+                kind
+                name
+                possibleTypes {
                   name
-                  possibleTypes {
-                    name
-                  }
                 }
               }
             }
-          `,
-        }),
-      })
-      .then(result => result.json())
-      .then(result => {
-        // here we're filtering out any type information unrelated to unions or interfaces
-        const filteredData = result.data.__schema.types.filter(
-          type => type.possibleTypes !== null,
-        );
-        result.data.__schema.types = filteredData;
-        fs.writeFileSync('./src/assets/fragmentTypes.json', JSON.stringify(result.data), err => {
-          if (err) {
-            console.error('Error writing fragmentTypes file', err);
-          } else {
-            console.log('Fragment types successfully extracted!');
           }
-        });
-      }, err => {
-        console.error('Error fetching request', err);
+        `,
+      }),
+    })
+    .then(result => result.json())
+    .then(result => {
+      // here we're filtering out any type information unrelated to unions or interfaces
+      const filteredData = result.data.__schema.types.filter(
+        type => type.possibleTypes !== null,
+      );
+      result.data.__schema.types = filteredData;
+      fs.writeFileSync('./src/assets/fragmentTypes.json', JSON.stringify(result.data), err => {
+        if (err) {
+          console.error('Error writing fragmentTypes file', err);
+        } else {
+          console.log('Fragment types successfully extracted!');
+        }
       });
+    }, err => {
+      console.error('Error fetching request', err);
+    });
   ```
+
+
   - For projects that require an **access_token** to fetch the schema query, you may need to get it from the *.env* file. Here, we're just taking the environment from the `.env` file.
 
   The above code will fetch the schema, filter out the possible union or interface types and write it onto a file called **fragmentTypes.json** in the **assets** folder.
 
-2. After creating **schemaQuery.ts** file, go to `package.json` file of your frontend app and update the script to run the **schemaQuery.ts** file during build time.
+### Update package.json file
+
+  After creating **schemaQuery.ts** file, go to `package.json` file of your frontend app and update the script to run the **schemaQuery.ts** file during build time.
 
   ```
   "scripts": {
@@ -80,7 +87,9 @@ grand_parent: Engineering
   ```
   - Always ensure the `build-fragment` command runs before the build command.
 
-3. Now, update the `graphql.service.ts` file or its equivalent file handling the Apollo Initialization, to query the cached schema in **fragmentTypes.json** for Introspection Fragment Matching. 
+### Update Graphql Service
+
+  Now, update the `graphql.service.ts` file or its equivalent file handling the Apollo Initialization, to query the cached schema in **fragmentTypes.json** for Introspection Fragment Matching. 
 
   ```
   buildFragmentMatcher(): Promise<any> {
@@ -104,22 +113,22 @@ grand_parent: Engineering
 
   async fetchSchema() {
     return new Promise((resolve, reject) => {
-			this.http.get('./assets/fragmentTypes.json')
-			.subscribe(async res => {
-					const response = await res;
-					resolve(response);
-			}, async error => {
-				console.log(error);
-				console.log('Fetching schema again..');
-				const res = await this.fetchSchemaAtRuntime().catch(e => {
-					reject(null);
-				});
-				if (res) {
-					resolve(res);
-				}
-				reject(null);
-			});
-		});
+      this.http.get('./assets/fragmentTypes.json')
+      .subscribe(async res => {
+        const response = await res;
+        resolve(response);
+      }, async error => {
+          console.log(error);
+          console.log('Fetching schema again..');
+          const res = await this.fetchSchemaAtRuntime().catch(e => {
+          reject(null);
+        });
+        if (res) {
+          resolve(res);
+        }
+        reject(null);
+      });
+    });
   }
 
   fetchSchemaAtRuntime() {
@@ -177,10 +186,16 @@ grand_parent: Engineering
   - Here we updated the `fetchSchema()` method to fetch from the cache first. 
   - In case the **fragmentTypes.json** does not exist or has any exceptions while sending the initial request, we'll try sending the request again at runtime through `fetchSchemaAtRuntime()` method.
 
-4. Finally, we add the `fragmentTypes.json` file in **gitIgnore**.
+### Add fragmentTypes.json to Git Ignore
+
+  Finally, we add the `fragmentTypes.json` file in **Git Ignore**.
 
   `src/assets/fragmentTypes.json`
 
-5. In case there are any errors pertaining *node-fetch*, do an `npm install` of that package.
+### Errors
+  
+  In case there are any errors pertaining *node-fetch*, do an `npm install` of that package.
 
-6. Finally, **update the enviornment variables in Travis and AWS** if there were any changes made to the `.env` file.
+### Update Travis and AWS (If .env has been updated)
+
+  **Update the enviornment variables in Travis and AWS if there were any changes made to the `.env` file**.
