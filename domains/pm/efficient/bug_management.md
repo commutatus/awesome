@@ -1,7 +1,7 @@
 ---
 title: Bug Management
 nav_order: 1
-parent: Efficient(PM)
+parent: Efficient
 grand_parent: PM
 ---
 # Bug Management
