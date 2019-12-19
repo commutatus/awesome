@@ -1,3 +1,39 @@
 .pointer {
   cursor: pointer;
 }
+
+summary:focus {
+  outline: none
+}
+
+.success-bg {
+  background: #E3FCEF;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.info-bg {
+  background: #DEEBFF;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+th {
+  background: #F4F5F6;
+}
+
+.priority-guideline-table td:first-of-type {
+  background: #F4F5F6;
+}
+
+.different-status-table th:first-of-type {
+  width: 22%;
+}
+
+.ticket-fields-specific-table th:last-of-type {
+  width: 30%;
+}
+
+.bug-source-table th:first-of-type {
+  width: 32%;
+}
