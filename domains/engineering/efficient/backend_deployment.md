@@ -30,9 +30,10 @@ production: # Environment
 ```Procfile
 worker: bundle exec sidekiq -e $RAILS_ENV
 ```
+
 ### New Rails server deployment
 1. On the [Cloud 66 Dashboard](https://app.cloud66.com/dashboard), click on *New Application*.
-  1. If you haven't, link your Github account to your Cloud66 acount
+  - If you haven't, link your Github account to your Cloud66 acount
 2. Select the git repository you wish to deploy
 3. Select the branch, the environment, and the application name. Conventions to follow are:
   - `staging` branch will go to the `Staging` environment, `master` branch will go to the `Production` environment
@@ -47,6 +48,7 @@ worker: bundle exec sidekiq -e $RAILS_ENV
 7. In the newly deployed application, add the `RAILS_MASTER_KEY` environment variable, as per [the secure credentials instructions.]({% link domains/engineering/secure/rails_secure_credentials.md %})
 8. [Add a new ssl certificate]({% link domains/engineering/secure/ssl.md %}#rails)
 9. With SSL set up, open your applications, go to `Network Settings` in the right hand menu, go to the `Redirects` tab, and select the `Redirect HTTP to HTTPS` checkmark. Click on `Apply Redirects` before you leave
+10. If your project requires background jobs, [set up the worker server and the redis server]({% link domains/engineering/efficient/worker_queue.md %})
 
 
 ### Useful commands
