@@ -7,53 +7,48 @@ grand_parent: Engineering
 
 # Turn your apps to maintenance mode using environment variables
 
-If the site needs an migration for ruby versions or any other major update, the site shut go in a maintenance mode by informing the user that 
+If there is a planned maintainence, a site must go into maintenance mode and the end user should be made aware of the event. 
 	`Our site is under maintenance, please come back after sometime`
-For this we need to hardcode our site routes every time if we go for maintenance
-
-Making this kind of things easier we can follow the following steps to reduce the difficulty.
+To avoid hardcoding the site routes every time if it goes under maintenance, we can make use of an environment variable.
 
 ##	For rails apps
 
-
-1. Set Environment variable as `MAINTENANCE -> true` in cloud66.
-2. Set the condition in the routes of your application for redirecting to the `/maintenance` url.
+1. Set an environment variable as `MAINTENANCE = true` in cloud66.
+2. Check for this variable in the routes file of your application for redirecting to a `/maintenance` page.
 		
 		Note: Always place your maintenance page routes at the top of all other routes
 
-	Example: 
-		`if ENV["MAINTENANCE"] == "true"
+	Examples:
+	- For a monolith application
+		```if ENV["MAINTENANCE"] == true
 			get '/', to: redirect('/maintenance_page'), via: :get
 			get '/maintenance_page', to: 'application#maintenance_page'
 			get '*path', to: redirect('/maintenance_page'), via: :get
-		end`
+		end```
 
-	Create a action inside application_controller.rb called 
-		`def maintenance_page
-		end`
+	Create an action inside `application_controller.rb` example
+		```def maintenance_page
+		end```
 
-	Then create a template under views -> application -> maintenance_page.html.slim
-
-	For API 
+	Then create a template under views/application/maintenance_page.html
+	
+	- For an API 
 		The routes should be
-			`if ENV["MAINTENANCE"] == "true"
+		```if ENV["MAINTENANCE"] == "true"
 			get '/', to: 'application#maintenance_page', via: :get
 			get '*path', to: 'application#maintenance_page', via: :get
 			post '/', to: 'application#maintenance_page', via: :post
 			post '*path', to: 'application#maintenance_page', via: :post
 		end`
 
-	         `def maintenance_page
+	         ```def maintenance_page
 		       render json: { error: "Under Maintenance Site will be back in few hours"}, status: 503
-	         end`
+	         end```
+	 The status code 503 will allow a front-end client to understand the application is under maintainence and they can convey it to the user. 
 	         
-3. Create a default maintenance template in the project
-	
-	Create a template called `maintenance_page.html.slim` under views -> application -> maintenance_page.html.slim
+	Example template in a monolith app. 
 
-	Example Template
-
-		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center;">
+		```<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center;">
 			<div>
 				<img src="/w3images/forestbridge.jpg" />
 			</div>
@@ -67,4 +62,6 @@ Making this kind of things easier we can follow the following steps to reduce th
 				Contact us on
 				<a href="mailto:info@address.in" style="color:blue"> info@address.in </a> for any queries.
 			</p>
-		</div>
+		</div>```
+	
+	*An industry standard practise is to keep the maintenance page colour scheme and design consistent with your application. 
