@@ -8,8 +8,7 @@ grand_parent: Engineering
 # Turn your apps to maintenance mode using environment variables
 
 If there is a planned maintainence, a site must go into maintenance mode and the end user should be made aware of the event. 
-	`Our site is under maintenance, please come back after sometime`
-To avoid hardcoding the site routes every time if it goes under maintenance, we can make use of an environment variable.
+A notice something like - `Our site is under maintenance, please come back after sometime` should be conveyed. To avoid hardcoding the site routes every time if it goes under maintenance, environment variables can be employed.
 
 ##	For rails apps
 
@@ -36,8 +35,8 @@ To avoid hardcoding the site routes every time if it goes under maintenance, we 
 
 	Then create a template under views/application/maintenance_page.html
 	
-	- For an API 
-		The routes should be
+	- For an API the routes should be
+		
 		```
 		if ENV["MAINTENANCE"] == true
 			get '/', to: 'application#maintenance_page', via: :get
@@ -45,9 +44,8 @@ To avoid hardcoding the site routes every time if it goes under maintenance, we 
 			post '/', to: 'application#maintenance_page', via: :post
 			post '*path', to: 'application#maintenance_page', via: :post
 		 end
-		 ```
-
-	         ```
+		 
+		 
 		 def maintenance_page
 		       render json: { error: "Under Maintenance Site will be back in few hours"}, status: 503
 	         end
