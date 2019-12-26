@@ -20,30 +20,38 @@ To avoid hardcoding the site routes every time if it goes under maintenance, we 
 
 	Examples:
 	- For a monolith application
-		```if ENV["MAINTENANCE"] == true
+		```
+		if ENV["MAINTENANCE"] == true
 			get '/', to: redirect('/maintenance_page'), via: :get
 			get '/maintenance_page', to: 'application#maintenance_page'
 			get '*path', to: redirect('/maintenance_page'), via: :get
 		end
+		```
 
 	Create an action inside `application_controller.rb` example
-		```def maintenance_page
+		```
+		def maintenance_page
 		end
+		```
 
 	Then create a template under views/application/maintenance_page.html
 	
 	- For an API 
 		The routes should be
-		```if ENV["MAINTENANCE"] == true
+		```
+		if ENV["MAINTENANCE"] == true
 			get '/', to: 'application#maintenance_page', via: :get
 			get '*path', to: 'application#maintenance_page', via: :get
 			post '/', to: 'application#maintenance_page', via: :post
 			post '*path', to: 'application#maintenance_page', via: :post
 		 end
+		 ```
 
-	         ```def maintenance_page
+	         ```
+		 def maintenance_page
 		       render json: { error: "Under Maintenance Site will be back in few hours"}, status: 503
 	         end
+		 ```
 	 The status code 503 will allow a front-end client to understand the application is under maintainence and they can convey it to the user. 
 	         
 	Example template in a monolith app. 
