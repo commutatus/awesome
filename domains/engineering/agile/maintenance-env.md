@@ -41,9 +41,9 @@ To avoid hardcoding the site routes every time if it goes under maintenance, we 
 			post '*path', to: 'application#maintenance_page', via: :post
 		 end
 
-	         def maintenance_page
+	         ```def maintenance_page
 		       render json: { error: "Under Maintenance Site will be back in few hours"}, status: 503
-	         end```
+	         end
 	 The status code 503 will allow a front-end client to understand the application is under maintainence and they can convey it to the user. 
 	         
 	Example template in a monolith app. 
