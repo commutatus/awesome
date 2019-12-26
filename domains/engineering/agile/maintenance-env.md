@@ -34,21 +34,21 @@ To avoid hardcoding the site routes every time if it goes under maintenance, we 
 	
 	- For an API 
 		The routes should be
-		```if ENV["MAINTENANCE"] == "true"
+		```if ENV["MAINTENANCE"] == true
 			get '/', to: 'application#maintenance_page', via: :get
 			get '*path', to: 'application#maintenance_page', via: :get
 			post '/', to: 'application#maintenance_page', via: :post
 			post '*path', to: 'application#maintenance_page', via: :post
-		end`
+		 end
 
-	         ```def maintenance_page
+	         def maintenance_page
 		       render json: { error: "Under Maintenance Site will be back in few hours"}, status: 503
 	         end```
 	 The status code 503 will allow a front-end client to understand the application is under maintainence and they can convey it to the user. 
 	         
 	Example template in a monolith app. 
 
-		```<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center;">
+		<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center;">
 			<div>
 				<img src="/w3images/forestbridge.jpg" />
 			</div>
@@ -62,6 +62,6 @@ To avoid hardcoding the site routes every time if it goes under maintenance, we 
 				Contact us on
 				<a href="mailto:info@address.in" style="color:blue"> info@address.in </a> for any queries.
 			</p>
-		</div>```
+		 </div>
 	
 	*An industry standard practise is to keep the maintenance page colour scheme and design consistent with your application. 
