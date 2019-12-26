@@ -24,11 +24,11 @@ To avoid hardcoding the site routes every time if it goes under maintenance, we 
 			get '/', to: redirect('/maintenance_page'), via: :get
 			get '/maintenance_page', to: 'application#maintenance_page'
 			get '*path', to: redirect('/maintenance_page'), via: :get
-		end```
+		end
 
 	Create an action inside `application_controller.rb` example
 		```def maintenance_page
-		end```
+		end
 
 	Then create a template under views/application/maintenance_page.html
 	
