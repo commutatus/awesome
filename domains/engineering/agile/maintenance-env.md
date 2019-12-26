@@ -19,12 +19,14 @@ A notice something like - `Our site is under maintenance, please come back after
 
 	Examples:
 	- For a monolith application
+		
 		```
 		if ENV["MAINTENANCE"] == true
 			get '/', to: redirect('/maintenance_page'), via: :get
 			get '/maintenance_page', to: 'application#maintenance_page'
 			get '*path', to: redirect('/maintenance_page'), via: :get
 		end
+		
 		```
 
 	Create an action inside `application_controller.rb` example
@@ -43,13 +45,13 @@ A notice something like - `Our site is under maintenance, please come back after
 			get '*path', to: 'application#maintenance_page', via: :get
 			post '/', to: 'application#maintenance_page', via: :post
 			post '*path', to: 'application#maintenance_page', via: :post
-		 end
+		end
 		 
-		 
-		 def maintenance_page
-		       render json: { error: "Under Maintenance Site will be back in few hours"}, status: 503
-	         end
-		 ```
+		def maintenance_page
+			render json: { error: "Under Maintenance Site will be back in few hours"}, status: 503
+		end
+		
+		```
 	 The status code 503 will allow a front-end client to understand the application is under maintainence and they can convey it to the user. 
 	         
 	Example template in a monolith app. 
