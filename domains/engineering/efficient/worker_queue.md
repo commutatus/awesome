@@ -19,6 +19,14 @@ grand_parent: Engineering
   ```ruby
   config.active_job.queue_adapter = :sidekiq
   ```
+4. **For Rails 6+:** Create a new `config/sidekiq.yml` file with the following contents
+  ```yml
+  :queues:
+  - default
+  - active_storage_analysis
+  - active_storage_purge
+  ```
+  This will ensure jobs launched by ActiveStorage won't sit idle forever. If you are using any queue other than `default` in any of your jobs. make sure to add it here as well
 
 * *optional:* To track sidekiq's performance, add the following to the `config/routes.rb` file:
   ```ruby
