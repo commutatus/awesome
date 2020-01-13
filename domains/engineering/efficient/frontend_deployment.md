@@ -57,7 +57,10 @@ grand_parent: Engineering
 
    This will take some time to create, and once done, it should look exactly like the image below. It will also contain the URL of your application, though as of now it will open the default Elastic Beanstalk dummy page. So, we are done with EB.
 
-10. In your `.travis.yml` file append the following code snippet for deploying your application. You have to generate your`access_key_id` and `secret_access_key` from [AWS credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for JS. The `bucket_name` will take the name of the AWS S3 bucket which will be created automatically by AWS while creating the new application in EB.
+
+### **Travis CI Integration**
+
+1. In your `.travis.yml` file append the following code snippet for deploying your application. You have to generate your`access_key_id` and `secret_access_key` from [AWS credentials](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials.html) for JS. The `bucket_name` will take the name of the AWS S3 bucket which will be created automatically by AWS while creating the new application in EB.
 
     ```yaml
     language: node_js
@@ -102,12 +105,55 @@ grand_parent: Engineering
 
 
 
-11. Go to **Services** > **Click on S3 under Storage heading** > **Copy the bucket name** *(as highlighted in the image)* and paste in `.yml` file.
+2. Go to **Services** > **Click on S3 under Storage heading** > **Copy the bucket name** *(as highlighted in the image)* and paste in `.yml` file.
 
     [![Final s3 bucket](/assets/images/deploy-elb-bucket-final.png)](/assets/images/deploy-elb-bucket-final.png)
 
-12. Make commit and push your changes of `.travis.yml` file to the master branch. This will trigger a build, and once it is successful, the application will automatically be deployed to the URL, I have mentioned above.
+3. Make commit and push your changes of `.travis.yml` file to the master branch. This will trigger a build, and once it is successful, the application will automatically be deployed to the URL, I have mentioned above.
 
+### **GitHub Actions Integration**
+1. Go to your GitHub repository and click the **Actions** tab button.
+2. Click on the **Set up a workflow yourself** button, on the right corner, as shown in the screenshot below.
+
+    [![Actions start](/assets/images/actions-diy-workflow.png)](/assets/images/actions-diy-workflow.png)
+
+    This will open a code editor kind of window on the left and GitHub marketplace on the right.
+    This will attempt to create a `.github/workflows/main.yml` file in your root *(It will only create once you commit the changes)*.
+
+    [![Actions start](/assets/images/actions-workflow-file.png)](/assets/images/actions-workflow-file.png)
+
+3. In the editor paste the code snippet below and click on the **Start commit** button on the right corner. Add some commit message and click on **Commit new file**.
+
+    <script src="https://gist.github.com/yashwp/65d5f1e31a43e2172f1a457f12dd0d7a.js"></script>
+
+    Doing this will commit and push the new changes to your master branch by default. However, you can change the branch or you can create the folders on your local machine and push it to your desired branch.
+
+    In the above code snippet, under `steps:` we are using [an action library used to deploy to Beanstalk](https://github.com/marketplace/actions/beanstalk-deploy) which is available on the GitHub marketplace that facilitates the deployment procedure.
+4. Open your project in the code editor on your machine and pull the updated code from the `master` branch.
+5. Add two new tasks for caching `node_modules` and setup the node environment for your application. Append the code below under `steps:`.
+
+    <script src="https://gist.github.com/yashwp/5665b0475907b4792758da0fc8edfe82.js"></script>
+
+6. Now add other scripts to install your npm dependencies and build your application in production mode.
+
+    <script src="https://gist.github.com/yashwp/791ec94c4f5487acf061e6eae96b5685.js"></script>
+
+7. This is the important step, where you need to generate a zip file that will contain your complete source code *(without `node_modules`)*. The command below will recursively zip all the files inside the current directory except the `node_module` folder.
+
+    <script src="https://gist.github.com/yashwp/18f2cb2240f7a81f8a936f78b6768610.js"></script>
+
+8. Paste the code below under the instructions given above. This code snippet will generate a time-stamp hash which will be used with `version` key of our deployment zip file.
+
+    <script src="https://gist.github.com/yashwp/750e56203a7c0bcae8aded42d5f3eef5.js"></script>
+
+9. Now go to the **Settings** tab of your repository and on the side menu, select **Secrets**. Secrets are basically your private values like AWS secret key and access key which should not be present directly in your code.
+10. Click on **Add a new secret** button and add your AWS secret keys and access keys with recommended name as `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` . These keys will be used in the next step.
+
+    [![Actions start](/assets/images/actions-secrets.png)](/assets/images/actions-secrets.png)
+
+11. Now the final step is to add value to snippet which we have added in step #3. So now your `.github/workflows/main.yml` will look like this:
+
+    <script src="https://gist.github.com/yashwp/66e3c1ca95fa4a7d64a1cfe332e18117.js"></script>
 
 ## AWS S3
 ### Creating S3 Bucket
@@ -139,7 +185,7 @@ Make sure you replace the name with your bucket name in the `Resource` field. Af
 Your bucket is all set to serve your app! Now we need to push in our code to this bucket.
 ### Deploying our app to the bucket
 -  We'll be using travis in order to push changes to our bucket. If you don't have a travis file already you can start off with this one
-````
+```
 language:  node_js
 
 node_js:
