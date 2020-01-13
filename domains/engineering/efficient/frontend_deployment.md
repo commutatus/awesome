@@ -120,7 +120,7 @@ grand_parent: Engineering
     This will open a code editor kind of window on the left and GitHub marketplace on the right.
     This will attempt to create a `.github/workflows/main.yml` file in your root *(It will only create once you commit the changes)*.
 
-    [![Actions start](/assets/images/actions-workflow-file.png)](/assets/images/actions-workflow-file.png)
+    [![Actions workflow file](/assets/images/actions-workflow-file.png)](/assets/images/actions-workflow-file.png)
 
 3. In the editor paste the code snippet below and click on the **Start commit** button on the right corner. Add some commit message and click on **Commit new file**.
 
@@ -149,7 +149,7 @@ grand_parent: Engineering
 9. Now go to the **Settings** tab of your repository and on the side menu, select **Secrets**. Secrets are basically your private values like AWS secret key and access key which should not be present directly in your code.
 10. Click on **Add a new secret** button and add your AWS secret keys and access keys with recommended name as `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` . These keys will be used in the next step.
 
-    [![Actions start](/assets/images/actions-secrets.png)](/assets/images/actions-secrets.png)
+    [![Actions secret](/assets/images/actions-secrets.png)](/assets/images/actions-secrets.png)
 
 11. Now the final step is to add value to snippet which we have added in step #3. So now your `.github/workflows/main.yml` will look like this:
 
