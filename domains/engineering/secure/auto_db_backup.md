@@ -5,10 +5,12 @@ parent: Secure
 grand_parent: Engineering
 ---
 
-1. Install the [backup gem](https://github.com/backup/backup) on the machine. Versions other than `5.0.0.beta.1` versions can return an error with some json version. ssh onto your server and run
+The objective here is to automate database backups with a cron job and keep the backups secure remotely on an s3 bucket. 
+
+1. Installation: Install the [backup gem](https://github.com/backup/backup) on the machine. Versions other than `5.0.0.beta.1` versions can return an error with some json version. ssh onto your server and run
 	`gem install backup -v '5.0.0.beta.1'`
 
-2. Generate a model for the database. This model file will have the type and configuration of storage, database, encryption, compression, notifier etc. for the database. 
+2. Configuration: Generate a model for the database. This model file will have the type and configuration of storage, database, encryption, compression, notifier etc. for the database. 
 
 	`backup generate:model --trigger <model name> \
 	    --databases="postgresql" --storages="s3"  \
@@ -32,7 +34,7 @@ grand_parent: Engineering
 	    s3.access_key_id     = ENV["BACKUP_BOT_AWS_KEY"]
 	    s3.secret_access_key = ENV["BACKUP_BOT_AWS_SECRET"]
 	    s3.region            = "ap-south-1"
-	    s3.bucket            = ENV["BACKUP_BUCKET_NAME"]
+	    s3.bucket            = <cm-live-projects bucket or storage provided by client>
 	    s3.path              = <Project name>
 	    s3.keep              = 5
 	  end
@@ -47,10 +49,10 @@ grand_parent: Engineering
 	end
 	```
 
-	This is how a demo model file looks. All the variables in this particular file are being fetched from the OS' environment variables (these were set through cloud66). There can be alternative ways to fetch these variables. The name, username and password of the database will be available on cloud66 (refer image below). A bucket was created to store these backups. A slack application was created to integrate a bot who sends the status of a backup. 
+	This is how a demo model file with mimimum complexity configuration looks like. All the variables in this particular file are being fetched from the OS' environment variables (these were set through cloud66). There can be alternative ways to fetch these variables. The name, username and password of the database will be available on cloud66 (refer image below). A bucket was created to store these backups. A slack application was created to integrate a bot who sends the status of a backup. 
 
 	The config file can be edited in a terminal based text editor or (be copied to the server).
 
 	[![environment-variables-c66](/assets/images/environment-variables-c66.png)](/assets/images/environment-variables-c66.png)
 
-3. To generate a backup use command `backup perform -t <backup model name>`. A cron job can be used for automatic backups. The command will differ in that case `/usr/local/bin/backup perform -t caif_backup`. On Rails, use the [`whenever` gem](https://github.com/javan/whenever) schedule cron. Contents of crontab can be listed using `crontab -l`. 
+3. Automation: To generate a backup use command `backup perform -t <backup model name>`. A cron job can be used for automatic backups. The command will differ in that case `/usr/local/bin/backup perform -t caif_backup`. On Rails, use the [`whenever` gem](https://github.com/javan/whenever) schedule cron. Contents of crontab can be listed using `crontab -l`. 
