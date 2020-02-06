@@ -12,13 +12,13 @@ grand_parent: Engineering
 
 	`backup generate:model --trigger <model name> \
 	    --databases="postgresql" --storages="s3"  \
-	    --encryptor="gpg" --compressor="gzip" --notifiers="slack"`
+	    --compressor="gzip" --notifiers="slack"`
 
-	Refer [this page](https://backup.github.io/backup/v4/generator/) for a detailed overview about the types of customizations available. You can omit any configuration that you don't need here on the command above. This will create a `/Users/<username>/Backup` directory by default. The config file can be found at `/Users/<username>/Backup/models/<you-model-name>.rb` 
+	Refer [this page](https://backup.github.io/backup/v4/generator/) for a detailed overview about the types of customizations available. You can omit any configuration that you don't need here on the command above. This will create a `/Users/<username>/Backup` (macOS) directory by default (`~/Backup` on a linux machine). The config file can be found at `/Users/<username>/Backup/models/<you-model-name>.rb` or linux equivalent.
 
 	
 	```ruby
-	Model.new(:caif_backup, 'Backup for staging of caif') do
+	Model.new(:<Project Environment>, <Project name with db type>) do
 		database PostgreSQL do |db|
 	    db.name               = ENV["POSTGRESQL_DATABASE"]
 	    db.username           = ENV["POSTGRESQL_USERNAME"]
@@ -29,19 +29,13 @@ grand_parent: Engineering
 		end
 
 	 	store_with S3 do |s3|
-	    # AWS Credentials
 	    s3.access_key_id     = ENV["BACKUP_BOT_AWS_KEY"]
 	    s3.secret_access_key = ENV["BACKUP_BOT_AWS_SECRET"]
-	    # Or, to use a IAM Profile:
-	    # s3.use_iam_profile = true
-
 	    s3.region            = "ap-south-1"
 	    s3.bucket            = ENV["BACKUP_BUCKET_NAME"]
+	    s3.path              = <Project name>
 	    s3.keep              = 5
 	  end
-
-		# Gzip [Compressor]
-		compress_with Gzip
 
 		#notifier slack
 	 	notify_by Slack do |slack|
@@ -59,6 +53,4 @@ grand_parent: Engineering
 
 	[![environment-variables-c66](/assets/images/environment-variables-c66.png)](/assets/images/environment-variables-c66.png)
 
-3. A unix-cron job that runs at a particular time in the day will let us generate continuous backups. The crontab can be updated manually or using the `whenever` gem. [Check here](https://github.com/javan/whenever) to see how to set up whenever gem. 
-
-Once the crontab is updated, automatic backups should be configured. Contents of the crontab can be listed using `crontab -l`. 
+3. To generate a backup use command `backup perform -t <backup model name>`. A cron job can be used for automatic backups. The command will differ in that case `/usr/local/bin/backup perform -t caif_backup`. On Rails, use the [`whenever` gem](https://github.com/javan/whenever) schedule cron. Contents of crontab can be listed using `crontab -l`. 
