@@ -7,10 +7,14 @@ grand_parent: Engineering
 
 The objective here is to automate database backups with a cron job and keep the backups secure remotely on an s3 bucket. 
 
-1. Installation: Install the [backup gem](https://github.com/backup/backup) on the machine. Versions other than `5.0.0.beta.1` versions can return an error with some json version. ssh onto your server and run
+1. __Installation__:
+<br/>
+Install the [backup gem](https://github.com/backup/backup) on the machine. Versions other than `5.0.0.beta.1` versions can return an error with some json version. ssh onto your server and run
 	`gem install backup -v '5.0.0.beta.1'`
 
-2. Configuration: Generate a model for the database. This model file will have the type and configuration of storage, database, encryption, compression, notifier etc. for the database. 
+2. __Configuration__:
+<br/> 
+Generate a model for the database. This model file will have the type and configuration of storage, database, encryption, compression, notifier etc. for the database. 
 
 	`backup generate:model --trigger <model name> \
 	    --databases="postgresql" --storages="s3"  \
@@ -55,4 +59,9 @@ The objective here is to automate database backups with a cron job and keep the 
 
 	[![environment-variables-c66](/assets/images/environment-variables-c66.png)](/assets/images/environment-variables-c66.png)
 
-3. Automation: To generate a backup use command `backup perform -t <backup model name>`. A cron job can be used for automatic backups. The command will differ in that case `/usr/local/bin/backup perform -t caif_backup`. On Rails, use the [`whenever` gem](https://github.com/javan/whenever) schedule cron. Contents of crontab can be listed using `crontab -l`. 
+3. __Automation__: 
+<br/>
+To generate a backup use command `backup perform -t <backup model name>`. A cron job can be used for automatic backups. The command will differ in that case `/usr/local/bin/backup perform -t staging` here. With Ruby, use the [whenever gem](https://github.com/javan/whenever) to schedule cron. Contents of crontab can be listed using `crontab -l`. 
+
+<br/>
+_Current version of this gem [does not have a restore command](https://github.com/backup/backup-features/issues/28). As of now restoration has to be manual. An automated restoration mechanism will be available soon._
