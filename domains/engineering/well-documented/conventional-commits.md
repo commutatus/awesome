@@ -44,6 +44,12 @@ Making it easier for people to contribute to your projects, by allowing them to 
 
 Commits must be prefixed with a type, which consists of a noun, feat, fix, etc., followed by an optional scope, and a required terminal colon and space.
 
+Commit format should be <code>keyword(scope): [ticket-id] </code>
+
+Commit must contain Ticket id.
+
+If custom keywords are used keyword should be in a single word.
+
 Scope may be provided after a type. A scope must consist of a noun describing a section of the codebase surrounded by parenthesis, e.g., fix(parser):
 
 A description must immediately follow the space after the type/scope prefix. The description is a short summary of the code changes, e.g., fix: array parsing issue when multiple spaces were contained in string.
@@ -90,12 +96,15 @@ Pre-commit msg hook that checks for conventional-commits
 		# repo_url = %x(git config --get remote.origin.url).sub(".git\n", '')
 
 		def check_format_rules(line_number, line)
-		  conventional_commit_conventions = [ 'feat(.*): ', 'fix(.*): ', 'chore(.*): ', 'install(.*): ', 'improvement(.*): ', 'ci(.*): ', 'ui(.*): ', 'style(.*): ' ]  
+		  conventional_commit_conventions = [ 'feat(.*): (.\w+\D\-\d+.) ', 'fix(.*): (.\w+\D\-\d+.) ', 'chore(.*): (.\w+\D\-\d+.) ', 'install(.*): (.\w+\D\-\d+.) ', 'improvement(.*): (.\w+\D\-\d+.) ', 'ci(.*): (.\w+\D\-\d+.) ', 'ui(.*): (.\w+\D\-\d+.) ', 'style(.*): (.\w+\D\-\d+.) ', 'change(.*): (.\w+\D\-\d+.) ']  
 		  conventional_commit_check = conventional_commit_conventions.map{|x| line.match(x)}.compact
 		  errors = []
 		  if conventional_commit_check.empty?
-		    unless line.include?('HOTFIX')
-		      return errors << "Error : Your commit message seems like not following conventional commit rules, please check your commit's convention"
+		    unless line.include?('HOTFIX') 
+		      if (line.match('(.*): (.\w+\D\-\d+.) ') && line.split('(')[0].match(" "))
+		        errors << "Error : Custom keyword should not be in multiple words."
+		        return errors << "Error : Your commit message seems like not following conventional commit rules, please check your commit's convention"
+		      end
 		    end
 		  end
 		  errors << "Error : Your commit message contains #{line.length} characters. Commit message should be less than 72 characters in length." if line.length > 72
@@ -121,11 +130,15 @@ Pre-commit msg hook that checks for conventional-commits
 		end
 
 		def validate_commit(current_branch, message_file)
-		  commit_errors = check_is_conventional(message_file)
 		  if current_branch == "master"
+		    print("\n")
+		    print("Failed to commit\n")
+		    print("\n")
 		    puts "✋ [PREVENT] --> Non shall commit to master!"
+		    print("\n") 
 		    exit 1
 		  else
+		    commit_errors = check_is_conventional(message_file)
 		    if commit_errors.empty?
 		      exit 0
 		    else
