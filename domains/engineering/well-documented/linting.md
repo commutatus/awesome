@@ -1,5 +1,5 @@
 ---
-title: Readme files
+title: Linting
 nav_order: 2
 parent: Well documented
 grand_parent: Engineering
