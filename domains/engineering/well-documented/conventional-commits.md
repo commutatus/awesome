@@ -96,20 +96,23 @@ Pre-commit msg hook that checks for conventional-commits
 		# repo_url = %x(git config --get remote.origin.url).sub(".git\n", '')
 
 		def check_format_rules(line_number, line)
-		  conventional_commit_conventions = [ 'feat(.*): (.\w+\D\-\d+.) ', 'fix(.*): (.\w+\D\-\d+.) ', 'chore(.*): (.\w+\D\-\d+.) ', 'install(.*): (.\w+\D\-\d+.) ', 'improvement(.*): (.\w+\D\-\d+.) ', 'ci(.*): (.\w+\D\-\d+.) ', 'ui(.*): (.\w+\D\-\d+.) ', 'style(.*): (.\w+\D\-\d+.) ', 'change(.*): (.\w+\D\-\d+.) ']  
+		  conventions = ['feat', 'fix', 'chore', 'install', 'improvement', 'ci', 'ui', 'style', 'change']
+		  conventional_commit_conventions = [ 'feat(.*): \[\w+\D\-\d+\] ', 'fix(.*): \[\w+\D\-\d+\] ', 'chore(.*): \[\w+\D\-\d+\] ', 'install(.*): \[\w+\D\-\d+\] ', 'improvement(.*): \[\w+\D\-\d+\] ', 'ci(.*): \[\w+\D\-\d+\] ', 'ui(.*): \[\w+\D\-\d+\] ', 'style(.*): \[\w+\D\-\d+\] ', 'change(.*): \[\w+\D\-\d+\] ']  
 		  conventional_commit_check = conventional_commit_conventions.map{|x| line.match(x)}.compact
 		  errors = []
+		  keyword = line.split('(')[0]
 		  if conventional_commit_check.empty?
 		    unless line.include?('HOTFIX') 
-		      if (line.match('(.*): (.\w+\D\-\d+.) ') && line.split('(')[0].match(" "))
-		        errors << "Error : Custom keyword should not be in multiple words."
+		      if conventions.include?(keyword.lstrip.rstrip)
 		        return errors << "Error : Your commit message seems like not following conventional commit rules, please check your commit's convention"
 		      end
+		      errors << "Error : Your custom commit doesn't seem like following conventional commit rules" if (!conventions.include?(keyword) && line.match('(.*): \[\w+\D\-\d+\] ').nil?)
 		    end
 		  end
+		  errors << "Error : Keyword neither should be in multiple words nor contain any trailing space." if keyword.match(" ")
 		  errors << "Error : Your commit message contains #{line.length} characters. Commit message should be less than 72 characters in length." if line.length > 72
-		  errors << "Error : Your subject contains #{line.split(':')[1].length} characters. Subject should be less than 50 characters" if line.split(':')[1].length > 50
-		  errors << "Error : Commit message subject should start in Capital." if line.split(':')[1].lstrip[0] == line.split(':')[1].lstrip[0].downcase
+		  errors << "Error : Your subject contains #{line.split(':')[1].length} characters. Subject should be less than 50 characters" if line.split(']')[1]&.length.to_i > 50
+		  errors << "Error : Commit message subject should start in Capital." if line.split(']')[1] && line.split(']')[1].lstrip[0] == line.split(']')[1].lstrip[0].downcase
 		  return errors
 		end
 
@@ -153,7 +156,7 @@ Pre-commit msg hook that checks for conventional-commits
 		        File.open(message_file, 'w') do |file|
 		          file.write edit
 		        end
-		        validate_commit(message_file)
+		        validate_commit(current_branch, message_file)
 		      else
 		        exit 1
 		      end
