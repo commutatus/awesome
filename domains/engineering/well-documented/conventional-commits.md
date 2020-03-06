@@ -38,7 +38,9 @@ Making it easier for people to contribute to your projects, by allowing them to 
 
 <b>docs:</b>      Everything related to documentation
 
-<b>chore:</b>     Regular code maintenance.[ You can also use emojis to represent commit types]
+<b>chore:</b>     Regular code maintenance.[You can also use emojis to represent commit types]
+
+<b>HOTFIX:</b>    If any urgent fixes required.
 
 ### Rules
 
@@ -62,13 +64,9 @@ One or more footers may be provided one blank line after the body. Each footer M
 
 A footer’s value may contain spaces and newlines, and parsing must terminate when the next valid footer token/separator pair is observed.
 
-Breaking changes must be indicated at the very beginning of the body section, or at the beginning of a line in the footer section. 
+A hotfix must consist of the uppercase text HOTFIX, followed by a colon and a space.
 
-A breaking change must consist of the uppercase text BREAKING CHANGE, followed by a colon and a space.
-
-A description must be provided after the BREAKING CHANGE:, describing what has changed about the API, e.g., BREAKING CHANGE: environment variables now take precedence over config files.
-
-The units of information that make up conventional commits must not be treated as case sensitive by implementors, with the exception of BREAKING CHANGE which must be uppercase.
+A description must be provided after the HOTFIX:, describing what the change is about, e.g., HOTFIX: environment variables now take precedence over config files.
 
 ### How to use
 
