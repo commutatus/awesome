@@ -15,13 +15,16 @@ WebP is a modern image format that provides superior lossless and lossy compress
 
 ### References
 
-I would suggest going through the following articles and have a understanding about how the jpg -> webp conversion flow works and then continue here. This article contains the bug fixed code and some improvements.
+I would suggest going through the following articles and have a understanding about how the jpg -> webp conversion flow works and then continue here.
 
 [Resizing images with amazon cloudfront lambdaedge aws cdn blog](https://aws.amazon.com/blogs/networking-and-content-delivery/resizing-images-with-amazon-cloudfront-lambdaedge-aws-cdn-blog/)
 
 [Converting images to webp from cdn](https://medium.com/nona-web/converting-images-to-webp-from-cdn-9433b56a3d52)
 
-I followed the step by step section mentioned in the AWS blog.
+I followed the step by step section mentioned in the AWS blog. This article contains the bug fixed code and some improvements. Some improvements includes
+
++ S3 URL with space and %20 bug fixed
++ Dimension support added. You can request for a particular dimension and if it is available then it will be served.
 
 
 ### Step 1: Creating the Deployment Packages
@@ -54,10 +57,22 @@ image-optimization-service → lambda → viewer-request-function → handler.js
 ```
 const userAgent = require('useragent')
 const path = require('path')
+const querystring = require('querystring');
+
+const variables = {
+  allowedDimension : [ {w:100,h:100}, {w:200,h:200}, {w:300,h:300}, {w:400,h:400} ],
+  defaultDimension : {w:200,h:200},
+  variance: 20,
+  webpExtension: 'webp'
+};
 
 exports.handler = async (event, context, callback) => {
   const request = event.Records[0].cf.request
   const headers = request.headers
+
+  // parse the querystrings key-value pairs. In our case it would be d=100x100
+  const params = querystring.parse(request.querystring);
+
   const userAgentString = headers['user-agent'] && headers['user-agent'][0] ? headers['user-agent'][0].value : null
   const agent = userAgent.lookup(userAgentString)
 
@@ -73,25 +88,96 @@ exports.handler = async (event, context, callback) => {
 
   const supportingBrowser = browsersToInclude
     .find(browser => browser.browser === agent.family && agent.major >= browser.version)
+  let fwdUri = request.uri
+  request.headers['originalKey'] = [{
+    key: 'originalKey',
+    value: fwdUri.substring(1)
+  }]
 
-  if (supportingBrowser) {
+  if (supportingBrowser && params.d ) {
     const fileFormat = path.extname(request.uri).replace('.', '')
-    request.headers['original-resource-type'] = [{
-      key: 'Original-Resource-Type',
-      value: `image/${fileFormat}`
+    // read the dimension parameter value = width x height and split it by 'x'
+    const dimensionMatch = params.d.split("x");
+
+    // set the width and height parameters
+    let width = dimensionMatch[0];
+    let height = dimensionMatch[1];
+
+    const match = fwdUri.match(/(.*)\/(.*)\.(.*)/);
+
+    let prefix = match[1];
+    let imageName = match[2];
+    let extension = match[3];
+
+    // define variable to be set to true if requested dimension is allowed.
+    let matchFound = false;
+
+    // calculate the acceptable variance. If image dimension is 105 and is within acceptable
+    // range, then in our case, the dimension would be corrected to 100.
+    let variancePercent = (variables.variance/100);
+
+    for (let dimension of variables.allowedDimension) {
+        let minWidth = dimension.w - (dimension.w * variancePercent);
+        let maxWidth = dimension.w + (dimension.w * variancePercent);
+        if(width >= minWidth && width <= maxWidth){
+            width = dimension.w;
+            height = dimension.h;
+            matchFound = true;
+            break;
+        }
+    }
+
+    // read the accept header to determine if webP is supported.
+    let accept = headers['accept']?headers['accept'][0].value:"";
+
+    let url = [];
+    // build the new uri to be forwarded upstream
+    url.push(prefix);
+    url.push(width+"x"+height);
+
+    // check support for webp
+    if (accept.includes(variables.webpExtension)) {
+        url.push(variables.webpExtension);
+    }
+    else{
+        url.push(extension);
+    }
+    url.push(imageName+"."+extension);
+    request.headers['dimensionIncluded'] = [{
+      key: 'dimensionIncluded',
+      value: 'true'
     }]
+    // fwdUri = url.join("/");
+    fwdUri = fwdUri.replace(/(\.jpg|\.png|\.jpeg)$/g, '_'+width+'x'+height+'.webp')
+    // final modified url is of format image_100x100.webp
+    request.uri = fwdUri;
+    request.query = request.querystring
 
-    const olduri = request.uri
-    const newuri = olduri.replace(/(\.jpg|\.png|\.jpeg)$/g, '.webp')
-    request.uri = newuri
+    return callback(null, request);
+
+  } else if (supportingBrowser) {
+    request.headers['dimensionIncluded'] = [{
+      key: 'dimensionIncluded',
+      value: 'false'
+    }]
+    fwdUri = fwdUri.replace(/(\.jpg|\.png|\.jpeg)$/g, '.webp')
+    // final modified url is of format image.webp
+    request.uri = fwdUri;
+    request.query = request.querystring
+
+    return callback(null, request);
   }
-
   return callback(null, request)
 }
+
 ```
 
 image-optimization-service → lambda → origin-response-function → handler.js
 ```
+const http = require('http');
+const https = require('https');
+const querystring = require('querystring');
+
 const path = require('path')
 const AWS = require('aws-sdk')
 
@@ -100,59 +186,118 @@ const S3 = new AWS.S3({
 })
 
 const Sharp = require('sharp')
-const BUCKET = 'BUCKET-NAME'
+const BUCKET = 'civis-api-production'
 const QUALITY = 75
 
 exports.handler = async (event, context, callback) => {
-  const { request, response } = event.Records[0].cf
-  const { uri } = request
+
+  let response = event.Records[0].cf.response
+
+  let request = event.Records[0].cf.request;
+
   const headers = response.headers
 
-  if (path.extname(uri) === '.webp') {
-    console.log(response)
-    console.log(request)
-    if (parseInt(response.status) === 404) {
-      const format = request.headers['original-resource-type'] && request.headers['original-resource-type'][0]
-        ? request.headers['original-resource-type'][0].value.replace('image/', '')
-        : null
+  const request_headers = request.headers
 
-      const key = uri.substring(1)
-      const s3key = key.replace('.webp', `.${format}`)
-      console.log("Printing key:", key)
-      console.log("Printing S3key", s3key)
-      try {
-        const bucketResource = await S3.getObject({ Bucket: BUCKET, Key: decodeURI(s3key.split('+').join(' ')) }).promise()
+  const originalKey = request_headers.originalkey[0].value
+
+
+  const dimensionincluded = request_headers.dimensionincluded[0].value
+
+  // if (path.extname(uri) === '.webp') {
+  if (parseInt(response.status) === 404) {
+
+    const { uri } = request
+
+    let params = querystring.parse(request.querystring);
+
+    // read the required path. Ex: uri /images/100x100/webp/image.jpg
+    let path = request.uri;
+
+    // read the S3 key from the path variable.
+    // Ex: path variable /images/100x100/webp/image.jpg
+    let newKey = path.substring(1);
+
+    // Ex: file_name=images/200x200/webp/image_100x100.jpg
+    // Getting the image_100x100.webp part alone
+    let file_name = path.split('/').slice(-1)[0]
+
+    // get the source image file
+
+    try {
+      if (dimensionincluded == "false" || dimensionincluded == false) {
+        let requiredFormat = file_name.split('.')[1]
+
+        const bucketResource = await S3.getObject({ Bucket: BUCKET, Key: originalKey }).promise()
+
+        // perform the resize operation
+
         const sharpImageBuffer = await Sharp(bucketResource.Body)
           .webp({ quality: +QUALITY })
           .toBuffer()
-        console.log("Got the S3 image and converted. Trying to put it into S3")
+
+        // save the resized object to S3 bucket with appropriate object key.
         await S3.putObject({
           Body: sharpImageBuffer,
           Bucket: BUCKET,
           ContentType: 'image/webp',
           CacheControl: 'max-age=31536000',
-          Key: decodeURI(key.split('+').join(' ')),
+          Key: newKey,
           StorageClass: 'STANDARD'
         }).promise()
 
-        response.status = 200
-        response.body = sharpImageBuffer.toString('base64')
-        response.bodyEncoding = 'base64'
-        response.headers['content-type'] = [{ key: 'Content-Type', value: 'image/webp' }]
-      } catch (error) {
-        console.log("Printing the error:")
-        console.error(error)
+        // generate a binary response with resized image
+        response.status = 200;
+        response.body = sharpImageBuffer.toString('base64');
+        response.bodyEncoding = 'base64';
+        response.headers['content-type'] = [{ key: 'Content-Type', value: 'image/' + requiredFormat }];
+        callback(null, response);
+      } else {
+        // perform the resize operation
+
+        // Getting the 100x100.webp part alone
+        let dimension = file_name.split('_')[1].split('.')[0]
+
+        let requiredFormat = file_name.split('_')[1].split('.')[1]
+
+        let width = dimension.split('x')[0]
+
+        let height = dimension.split('x')[1]
+
+        const bucketResource = await S3.getObject({ Bucket: BUCKET, Key: originalKey }).promise()
+
+        const sharpImageBuffer = await Sharp(bucketResource.Body)
+          .resize(parseInt(width), parseInt(height))
+          .webp({ quality: +QUALITY })
+          .toBuffer()
+        // save the resized object to S3 bucket with appropriate object key.
+        await S3.putObject({
+          Body: sharpImageBuffer,
+          Bucket: BUCKET,
+          ContentType: 'image/webp',
+          CacheControl: 'max-age=31536000',
+          Key: newKey,
+          StorageClass: 'STANDARD'
+        }).promise()
+
+        // generate a binary response with resized image
+        response.status = 200;
+        response.body = sharpImageBuffer.toString('base64');
+        response.bodyEncoding = 'base64';
+        response.headers['content-type'] = [{ key: 'Content-Type', value: 'image/' + requiredFormat }];
+        callback(null, response);
       }
-    } else {
-      console.log("Its not 404, So returning webp")
-      headers['content-type'] = [{
-        'value': 'image/webp',
-        'key': 'Content-Type'
-      }]
+    } catch (e) {
     }
+  } else {
+    headers['content-type'] = [{
+      'value': 'image/webp',
+      'key': 'Content-Type'
+    }]
   }
   callback(null, response)
  }
+
 ```
 ### Step 2: Building docker
 Change directory to `image-optimization-service` thats the root of the project.
@@ -314,12 +459,14 @@ There was a problem saving the files into the S3 bucket. The bucket policy of th
 ```
 Now the deployment takes around 20 mins. After which if you hit the cloudfront URL it should convert the image and upload the .webp image to same place.
 
+## Deployment Automation
+
+The above settings can be done simply by cloning this [repository](https://github.com/commutatus/image-conversion-automation) and running the following script.
+
+- `./webp_deployment_automation.rb create`
+
+
 ### Things to note
 
 1. After deployment if S3 images are not accessbile even after policy, Enable the read permission for everyone.
 2. S3 URL with + and space have been handled here.
-
-### TODO
-
-1. Dimension Support
-2. Script to automate the whole process. Can be cloudformation or shell.
