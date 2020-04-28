@@ -186,7 +186,7 @@ const S3 = new AWS.S3({
 })
 
 const Sharp = require('sharp')
-const BUCKET = 'civis-api-production'
+const BUCKET = 'BUCKET-NAME'
 const QUALITY = 75
 
 exports.handler = async (event, context, callback) => {
