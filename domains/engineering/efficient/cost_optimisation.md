@@ -46,8 +46,11 @@ The general procedure that should be followed are
 
 4. Review the possibility for savings plan/reserved instances implementation
 
-   - Is the resource consistently used for 730 hours a month? 
-   - Do we forsee removing the resource in the next 1 year?
+   1. Is the resource consistently used for 730 hours a month? 
+   2. Do we forsee removing the resource in the next 1 year?
+
+
+   If the answer to question 1 is yes and question 2 is no, then we move forward with reserving capacity in the form of reserved instances or a savings plan.
 
 ---
 
