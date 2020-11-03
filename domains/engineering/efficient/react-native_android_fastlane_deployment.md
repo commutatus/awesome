@@ -1,14 +1,8 @@
-
 ---
-
 title: Fastlane for React Native Android
-
 nav_order: 1
-
 parent: Efficient
-
 grand_parent: Engineering
-
 ---
 
   
