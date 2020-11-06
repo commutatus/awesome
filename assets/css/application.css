@@ -37,22 +37,3 @@ th {
 .bug-source-table th:first-of-type {
   width: 32%;
 }
-
-@media (min-width: 50rem) {.main-content-wrap {
-  margin-left: calc((100% - 1064px) / 2 + 264px) !important;
-} }
-
-.side-bar {
-  padding: 0px 20px;
-}
-.main-nav {
-  overflow-y: scroll;
-}
-
-.site-header {
-  width: 100% !important;
-}
-::-webkit-scrollbar {
-    width: 0px;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
-}
