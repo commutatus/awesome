@@ -56,4 +56,4 @@ def change
   change_column :MODEL, :COLUMN_NAME, :citext
 end
 ```
-FInally, run `rails db:migrate`
+Finally, run `rails db:migrate`
