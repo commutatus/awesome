@@ -9,9 +9,9 @@ Here is the set of principles that we follow in everything that we do!
 
 **Engineering**
 
-- [Efficient](/domains/engineering/efficient)
-- Agile
+- [Agile](/domains/engineering/agile)
 - [Well documented](/domains/engineering/well-documented)
+- [Efficient](/domains/engineering/efficient)
 - [Secure](/domains/engineering/secure)
 - Open source by design
 
@@ -25,7 +25,7 @@ Here is the set of principles that we follow in everything that we do!
 
 **Product Management**
 
-- Efficient
+- [Efficient](/domains/pm/efficient)
 - Agile
 - Data driven
 - Inspire trust
