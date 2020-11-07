@@ -35,6 +35,12 @@
           </li>
         {%- endif -%}
       {%- endunless -%}
+      {%- if node.title == "Contributing" -%}
+        <hr class="m-0 mt-5">
+        <li class="navigation-list-item{% if page.url == node.url or page.title == node.title %} active{% endif %}">
+          <a href="{{ node.url | absolute_url }}" class="navigation-list-link{% if page.url == node.url %} active{% endif %}">{{ node.title }}</a>
+        </li>
+      {%- endif -%}
     {%- endfor -%}
   </ul>
 </nav>
