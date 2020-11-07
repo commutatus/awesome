@@ -38,6 +38,12 @@ th {
   width: 32%;
 }
 
-.navigation-list, .navigation-list-child-list {
+.navigation-list {
+  padding-left: 0px;
+  list-style-type: none;
+}
+
+.navigation-list-child-list {
   padding-left: 20px;
+  list-style-type: none;
 }
