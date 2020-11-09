@@ -25,7 +25,7 @@ Here is the set of principles that we follow in everything that we do!
 
 **Product Management**
 
-- [Efficient](/domains/pm/efficient)
+- [Processes](/domains/pm/processes)
 - Agile
 - Data driven
 - Inspire trust
