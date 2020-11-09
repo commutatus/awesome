@@ -1,6 +1,6 @@
 ---
 title: Contributing
-nav_order: 3
+nav_order: 100
 ---
 
 1. TOC
