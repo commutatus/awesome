@@ -1,4 +1,6 @@
 remote_theme: pmarsceill/just-the-docs
 url: "https://awesome.commutatus.com" # the base hostname & protocol for your site
+ga_tracking: GTM-WR258RJ
+ga_tracking_anonymize_ip: true
 plugins:
   - jekyll-sitemap
