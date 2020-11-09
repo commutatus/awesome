@@ -1,7 +1,6 @@
 ---
 title: Contributing
 nav_order: 100
-nav_exclude: true
 ---
 
 1. TOC
