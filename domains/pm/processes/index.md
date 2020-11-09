@@ -4,4 +4,4 @@ nav_order: 1
 has_children: true
 parent: PM
 ---
-Efficiency is defined as achieving maximum productivity with minimum wasted effort or expense and working in a well-organized, competent way.
+A process is a series or set of activities that interact to produce a result; it may occur once-only or be recurrent or periodic.
