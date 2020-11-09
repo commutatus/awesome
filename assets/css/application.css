@@ -37,19 +37,3 @@ th {
 .bug-source-table th:first-of-type {
   width: 32%;
 }
-
-.navigation-list {
-  padding-left: 0px;
-  list-style-type: none;
-}
-
-.navigation-list-child-list {
-  padding-left: 20px;
-  list-style-type: none;
-}
-
-@media only screen and (max-width: 50rem) {
-  .navigation-list, .navigation-list-child-list {
-    padding-left: 15px;
-  }
-}
