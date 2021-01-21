@@ -1,6 +1,6 @@
 ---
 title: Conventional Commits
-nav_order: 3
+nav_order: 4
 parent: Well documented
 grand_parent: Engineering
 ---
@@ -100,7 +100,7 @@ Pre-commit msg hook that checks for conventional-commits
 		  errors = []
 		  keyword = line.split('(')[0]
 		  if conventional_commit_check.empty?
-		    unless line.include?('HOTFIX') 
+		    unless line.include?('HOTFIX')
 		      if conventions.include?(keyword.lstrip.rstrip)
 		        return errors << "Error : Your commit message seems like not following conventional commit rules, please check your commit's convention"
 		      end
@@ -136,7 +136,7 @@ Pre-commit msg hook that checks for conventional-commits
 		    print("Failed to commit\n")
 		    print("\n")
 		    puts "✋ [PREVENT] --> Non shall commit to master!"
-		    print("\n") 
+		    print("\n")
 		    exit 1
 		  else
 		    commit_errors = check_is_conventional(message_file)
