@@ -12,7 +12,12 @@ The GraphQL specification is flexible and doesn't impose specific naming guideli
 - Field names should use `camelCase` like, `currencyList`. Many GraphQL clients are written in JavaScript, Java, Kotlin, or Swift, all of which recommend camelCase for variable names.
 - Type names should use `PascalCase` like, `ConversationParticipant`. This matches how classes are defined in the languages mentioned above.
 - Enum names should use `PascalCase`.
-- Enum values should use `ALL_CAPS`, because they are similar to constants.
+- Enum values should use `ALL_CAPS` because they are similar to constants. If you are using `kebab-case` in the queries then, you can easily translate them using the provided ruby method.
+  ```ruby
+  def to_kebab
+    return self.downcase.dasherize
+  end
+  ```
 - Folder and file names are lower case.
 - File names include the name of the component the file represents. Plurals are used in folder names, but not in file names.
 - Don’t prefix the files of subfolders with anything because they already live under the them and naming it like `user_profile_queries.rb` or `company_mutation.rb` would be redundant and wouldn't matter.
