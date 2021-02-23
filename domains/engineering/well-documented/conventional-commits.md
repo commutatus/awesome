@@ -1,6 +1,6 @@
 ---
 title: Conventional Commits
-nav_order: 3
+nav_order: 4
 parent: Well documented
 grand_parent: Engineering
 ---
