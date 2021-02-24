@@ -170,6 +170,26 @@ For the scope of this article we will be using the certificate provided by ACM. 
 12. Click **Create** to create a record in Route 53.
 
 Once the record is created, wait for **Validation status** to show **Success**. This completes generation of the certificate using **AWS Certificate Manager (ACM)**.
+
+### Create a CloudFront distribution
+
+If everything works as expected for you then you can move ahead and create a CloudFront[^6] distribution with an Amazon S3 origin.
+
+**To create a distribution with an Amazon S3 origin**
+1. Open the [CloudFront console](https://console.aws.amazon.com/cloudfront)
+2. Choose **Create Distribution**.
+3. On the **Select a delivery method for your content** page, under **Web**, choose **Get Started**.
+4. On the **Create Distribution** page, in the **Origin Settings** section, for **Origin Domain Name**, enter the Amazon S3 website endpoint for your bucket. CloudFront fills in the **Origin ID** for you.
+5. For **Default Cache Behavior Settings**, keep the values set to the defaults.
+6. For **Distribution Settings**, keep the default values except the following fields,
+- Set **Alternate Domain Names (CNAMEs)** to the root domain and subdomain, for example, `some-website.com` and `www.some-website.com`.
+- For **SSL Certificate**, choose **Custom SSL Certificate (example.com)**, and choose the custom certificate that covers the domain and subdomain names. You must have created that in the previous step.
+7. Choose **Create Distribution**.
+
+- Once your distribution is deployed, you can reference your content with the new CloudFront domain name. It can be checked in the **Status** column.
+- Verify that your CloudFront distribution is working, enter the domain name of the distribution in a web browser.
+{: .fs-3.pl-6.info-bg}
+
 ### Add alias record in Route 53
 
 Before adding a record, make sure you have registered your domain with Route 53. We will create an alias record that will map the domain in the hosted zone. In our case `some-website.com`.
@@ -200,3 +220,4 @@ Before adding a record, make sure you have registered your domain with Route 53.
 [^3]: [DNS hostnames](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-hostnames)
 [^4]: [AWS Global Accelerator](https://aws.amazon.com/global-accelerator/)
 [^5]: [Benifits over email validation](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-dns.html)
+[^6]: [What is Amazon CloudFront?](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
