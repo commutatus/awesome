@@ -142,6 +142,34 @@ Once you enabled the static website hosting, you need to grant public read acces
 - After adding the policy check the bucket endpoint once to verify if everything is working as intended. Inside your bucket, head to **Properties -> Static website hosting -> Bucket website endpoint**
 {: .fs-3.pl-6.info-bg}
 
+### Generate SSL Certificates using AWS Certificate Manager
+
+Before we move ahead with creation of CloudFront distribution you would be requiring a custom SSL certificate as you will be using your own domain name in the URLs for your object as an alternate name. The list of certificates can include any of the following:
+
+- Certificates provided by AWS Certificate Manager.
+- Certificates that you purchased from a third-party certificate authority and uploaded to ACM.
+- Certificates that you purchased from a third-party certificate authority and uploaded to the IAM certificate store.
+
+For the scope of this article we will be using the certificate provided by ACM. It is generate free of cost.
+
+**To generate a certificate using AWS Certificate Manager**
+1. Open the [AWS Certificate Manager console](https://console.aws.amazon.com/acm/home).
+2. Choose **Request a certificate**.
+3. On the **Request a certificate** page, choose **Request a public certificate** followed by **Request a certificate** CTA to continue.
+4. On the **Add domain names** page, type your domain name that you want to provide certificate for. You can either use a subdomain name, such as `www.some-website.com`, or a root domain name such as `some-website.com`.
+    - You can also use an asterisk (`*`) as a wild card to protect several site names in the same domain. For example, `*.some-website.com` protects `www.some-website.com`, and `login.some-website.com`.
+    - When you request a wild card certificate, the asterisk (`*`) must be in the leftmost position of the domain name and can protect only one subdomain level. For example, `*.some-website.com` can protect `www.some-website.com`, and `login.some-website.com`, but it cannot protect `www.login.some-website.com`. Also note that `*.some-website.com` protects only the subdomains of `some-website.com`, it does not protect the root domain (`some-website.com`).
+    {: .fs-3.pl-6.info-bg}
+5. To add another name, choose **Add another name to this certificate** and type the name in the text box. This is useful for protecting both a root domain (such as `some-website.com`) and its subdomains such as `*.some-website.com`).
+6. Choose **Next** when you finish adding the domain names.
+7. On the **Select validation method** page, choose either **DNS validation** or **Email validation**. We recommend that you use DNS validation[^5] rather than email validation if you have permission to modify the DNS configuration for the domains in your certificate request. For the scope of this article, we will use the DNS validation.
+8. On the **Add tags** page, you can optionally tag your certificate.
+9. **Review** the certificate and click **Confirm and request**.
+10. You must complete the validation before ACM can issue your certificate, expand the panel with the domain name and add the **CNAME** record to the DNS configuration for your domain.
+11. If you are using **Route 53** as your DNS management tool then choose **Create record in Route 53** and ACM will update your DNS configuration for you.
+12. Click **Create** to create a record in Route 53.
+
+Once the record is created, wait for **Validation status** to show **Success**. This completes generation of the certificate using **AWS Certificate Manager (ACM)**.
 ### Add alias record in Route 53
 
 Before adding a record, make sure you have registered your domain with Route 53. We will create an alias record that will map the domain in the hosted zone. In our case `some-website.com`.
@@ -171,3 +199,4 @@ Before adding a record, make sure you have registered your domain with Route 53.
 [^2]: Learn more about [Elastic IP address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html)
 [^3]: [DNS hostnames](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-hostnames)
 [^4]: [AWS Global Accelerator](https://aws.amazon.com/global-accelerator/)
+[^5]: [Benifits over email validation](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-dns.html)
