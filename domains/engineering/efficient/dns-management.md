@@ -5,6 +5,9 @@ parent: Efficient
 grand_parent: Engineering
 ---
 
+1. TOC
+{:toc}
+
 # DNS management
 
 One of the most crucial and critical parts of any IT infrastructure is the Domain Name Server (DNS). In simple words, DNS is like a phone book for IP addresses that helps users to access any website using human-readable text that is known as a domain name. DNS orchestrate all the complex working [^1] between an IP address and a domain name in the background. All the services online depend on it, which makes its management important.
