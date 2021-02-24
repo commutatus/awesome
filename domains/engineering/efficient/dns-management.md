@@ -16,9 +16,9 @@ One of the most crucial and critical parts of any IT infrastructure is the Domai
 - Always prefer a CNAME record to forwards one domain or subdomain to another domain.
 - Never point a record to an IP address.
 - If it is absolutely necessary to use an IP address then switch to an Elastic IP address.
-- To redirect a root domain to any subdomain use services like Amazon S3 rather than handled in your application code level or in the Nginx or Apache servers.
+- To redirect a root domain to any subdomain use services like Amazon S3 and/or CloudFront rather than handled in your application code level or in the Nginx or Apache servers.
 
-In this document, we will walkthrough the step-by-step instruction on how to associating an Elastic IP address with a running instance and how site redirection using Amazon S3 and Route 53 works.
+In this document, we will walkthrough the step-by-step instruction on how to associating an Elastic IP address with a running instance and how site redirection using Amazon S3, CloudFront, and Route 53 works.
 
 ## Elastic IP address
 
@@ -65,7 +65,7 @@ Now that you have allocated an Elastic IP address, you can associate it with a r
 3. Select an Elastic IP address and choose **Actions -> Associate Elastic IP address**.
 4. Select the instance from **Instance** and then choose **Associate**.
 
-## Site redirection using Amazon S3 and Route 53
+## Site redirection using Amazon S3, CloudFront, and Route 53
 
 Consider you visited `some-website.com` and the browser changes the endpoint to `www.some-website.com` with HTTP 301 status code, indicating `some-website.com` is permanently moved to `www.some-website.com`. This is known as site redirection. It is a process of forwarding/changing the requested endpoint to a different one.
 
