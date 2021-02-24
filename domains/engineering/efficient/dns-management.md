@@ -200,16 +200,17 @@ Before adding a record, make sure you have registered your domain with Route 53.
 3. Choose **Create record**.
 4. Choose **Simple routing**, and choose **Next**.
 5. Choose **Define simple record**.
-6. In **Record name**, leave it as it is for the root domain. For subdomain, like `blog.some-website.com` input `blog`.
-7. In **Value/Route traffic to**, choose **Alias to S3 website endpoint**.
+6. In **Record name**, leave it as it is for the root domain. For subdomain, like `www.some-website.com` input `www`.
+7. In **Value/Route traffic to**, choose **Alias to CloudFront distribution** for Cloudfront. For adding via S3 bucket choose **Alias to S3 website endpoint**.
 8. Choose the **Region**, for example, Asia Pasific (Mumbai) [ap-south-1].
-9. Choose the **S3 bucket**, for example, s3-website.ap-south-1.amazonaws.com (some-website.com)
+9. Based on the selection of **value/route traffic to**, either choose the **distribution**, for example, dkvtdk7jiydzr.cloudfront.net or **S3 bucket**, for example, s3-website.ap-south-1.amazonaws.com (some-website.com)
 10. In **Record type**, choose **A ‐ Routes traffic to an IPv4 address and some AWS resources**.
 11. Disable the **Evaluate target health**.
 12. Choose **Define simple record**.
 
 - Verify that the redirection is working properly. If it is not, try clearing the browser cache and compare the name server for the hosted zone and your domain is correct.
 - For the S3 bucket to appear in the list, your S3 bucket name and Route 53 record name should be the same.
+- Amazon S3 does not support HTTPS access to the website. If you want to use HTTPS, you can use Amazon CloudFront to serve a static website hosted on Amazon S3.
 {: .fs-3.pl-6.info-bg}
 
 ---
