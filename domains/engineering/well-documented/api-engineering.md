@@ -32,9 +32,9 @@ grand_parent: Engineering
 1. Create a project aligning it to a company
 2. Navigate to projects section
 3. Create a log on entering
-   <br />a. 'Title'             - Title of the log
-   <br />b. 'Category'     - Category could be a New feature, Improvement, Bug, Breaking change, Fix
-   <br /> c. 'Description'  - Description of the log
+    - 'Title'        - Title of the log
+    - 'Category'     - Category could be a New feature, Improvement, Bug, Breaking change, Fix
+    - 'Description'  - Description of the log
 
     🎯 Regarding an API, API developers need to give (UI devs) full context in the description, on what to do with the API. This includes providing screenshots pointing to each field and describing what it needs to be used for (if not clear from the documentation).
     Below are two reference logs as such:
@@ -88,17 +88,63 @@ Descriptions can be added with the `field(...)` method as a *positional argum
 
 - Define arguments that are required vs optional
 
-  <br />Required arguments
+  Required arguments
     ```ruby
     argument :category, String, required:true
     ```
 
-  <br />Optional arguments
+  Optional arguments
     ```ruby
     argument :category, String, required:false
     ```
 Note: If all arguments are optional it leads to ArgumentError, to prevent this, you must either specify default_value for all keyword arguments or use the **args double splat operator argument in the method definition
 
+<details markdown="1">
+  <summary>Defining Enum Types</summary>
+  {:.pointer}
+  - In your application, enums extend {{ "GraphQL::Schema::Enum" | api_doc }} and define values with the `value(...)` method:
+
+    ```ruby
+    # app/graphql/types/base_enum
+    class Types::BaseEnum < GraphQL::Schema::Enum
+    end
+
+    # app/graphql/types/media_category.rb
+    class Types::MediaCategory < Types::BaseEnum
+      value "AUDIO", "An audio file, such as music or spoken word"
+      value "IMAGE", "A still image, such as a photo or graphic"
+      value "TEXT", "Written words"
+      value "VIDEO", "Motion picture, may have audio"
+    end
+    ```
+
+    Each value may have:
+
+    - A description (as the second argument or `description:` keyword)
+    - A deprecation reason (as `deprecation_reason:`), marking this value as deprecated
+    - A corresponding Ruby value (as `value:`), see below:
+
+        By default, Ruby strings correspond to GraphQL enum values. But, you can provide `value:` options to specify a different mapping. For example, if you use symbols instead of strings, you can say:
+
+        `value "AUDIO", value: :audio`
+
+        Then, GraphQL inputs of `AUDIO` will be converted to `:audio` and Ruby values of `:audio` will be converted to `"AUDIO"` in GraphQL responses.
+
+  - Defining GraphQL enums dynamically from Rails enums
+
+    ```ruby
+    module Types
+      class IssuableSeverityEnum < BaseEnum
+        graphql_name 'IssuableSeverity'
+        description 'Incident severity'
+
+        ::IssuableSeverity.severities.keys.each do |severity|
+          value severity.upcase, value: severity, description: "#{severity.titleize} severity."
+        end
+      end
+    end
+    ```
+</details>
 
 ### **Description for Type**
 
