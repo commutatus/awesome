@@ -50,7 +50,17 @@ worker: bundle exec sidekiq -e $RAILS_ENV
 9. With SSL set up, open your applications, go to `Network Settings` in the right hand menu, go to the `Redirects` tab, and select the `Redirect HTTP to HTTPS` checkmark. Click on `Apply Redirects` before you leave
 10. If your project requires background jobs, [set up the worker server and the redis server]({% link domains/engineering/efficient/worker_queue.md %})
 
-
+### Setting up CName record
+1.  On the [AWS Route53 console dashboard](https://console.aws.amazon.com/route53/v2/hostedzones) click on *Hosted Zone*.
+    [![route53-dashboard](/assets/images/route53/route53-dashboard.png)](/assets/images/route53/route53-dashboard.png)
+2.  In the hosted zones you can find hosted zone details and the list of records.(click on *Create record* )
+    [![route53-dashboard](/assets/images/route53/cname-create-record.png)](/assets/images/route53/cname-create-record.png)
+3.  Fill up the necessary fields.
+    - Fill in the *record name*. i.e. *staging.app.example.com*
+    - Select the *record type* as *CNAME*.
+    - In the *value* field fill in the domain name in which cloud66 server was hosted to, and create the record.
+    [![route53-dashboard](/assets/images/route53/cname-record.png)](/assets/images/route53/cname-record.png)
+    
 ### Useful commands
 To run these commands, first install the Cloud66 toolbelt in your machine by running `curl -sSL https://s3.amazonaws.com/downloads.cloud66.com/cx_installation/cx_install.sh | bash`
 1. `cx stack list`: List all the stacks. Useful to get the `$STACK_NAME` value for the other commands, and see the last deployment status and date/time
