@@ -11,8 +11,8 @@ grand_parent: Engineering
 - APIs should be easy to understand that there shouldn't be a need for UI onboarding
 - To follow a specific process/format to make the API understanding easier
 - To set a standard for everyone to be in sync in API understanding
-- Letting know the whole front-end team to be aware of new APIs or API changes without having to draft these (slack) messages and tumble on the message format everytime
-- Avoid follow-ups in knowing if an API or API change is up on staging/prod
+- Letting know the whole front-end team be aware of new APIs or API changes without having to draft these (slack) messages and tumble on the message format every time
+- Avoid follow-ups in knowing if an API or API change is upon staging/prod
 - Keeping the frontend and backend together to lessen the chances of such miscommunications, facilitating smooth application development
 - Achieve complete coherence of the teams working on the project
 
@@ -30,7 +30,7 @@ grand_parent: Engineering
 **Steps on how to use Changelog:**
 
 1. Create a project aligning it to a company
-2. Navigate to projects section
+2. Navigate to the projects section
 3. Create a log on entering
     - 'Title'        - Title of the log
     - 'Category'     - Category could be a New feature, Improvement, Bug, Breaking change, Fix
@@ -51,7 +51,7 @@ grand_parent: Engineering
 
 ## Documentation
 
-Documentation is first‐class feature of GraphQL type systems. To ensure the documentation of a GraphQL service remains consistent with its capabilities, descriptions of GraphQL definitions are provided alongside their definitions and made available via introspection.
+Documentation is a first‐class feature of GraphQL type systems. To ensure the documentation of a GraphQL service remains consistent with its capabilities, descriptions of GraphQL definitions are provided alongside their definitions and made available via introspection.
 
 ### **Description for field**
 
