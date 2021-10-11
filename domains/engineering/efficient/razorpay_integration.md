@@ -28,21 +28,20 @@ grand_parent: Engineering
 ```
 require 'razorpay'
 
-Razorpay.setup(Rails.application.credentials[Rails.env.to_sym][:razorpay_key_id],Rails.application.credentials[Rails.env.to_sym][:razorpay_secret_token])
+Razorpay.setup(Rails.application.credentials.dig(Rails.env.to_sym, :razorpay_key_id),Rails.application.credentials.dig(Rails.env.to_sym,:razorpay_secret_token)
+
 ```
 
 1. Next, create a module called **razorpay\_payment.rb** inside the concerns folder, here generate the Razorpay Order like so
 
 ```
- order = Razorpay::Order.create amount: order_amount, currency: cart.total_amount.currency.iso_code, receipt: cart.uuid, payment_capture: 1cart.update!(razorpay_order_id:order.id) 
+ order = Razorpay::Order.create amount: order_amount, currency: cart.total_amount.currency.iso_code, receipt: cart.uuid, payment_capture: 1
+ cart.update!(razorpay_order_id:order.id) 
  ```
 
 
-The options ```payment_capture: 1``` tells Razorpay that the payment that will be
+The options `payment_capture: 1` tells Razorpay that the payment that will be made against this order will be captured automatically. The `receipt` argument is an optional one.
 
-made against this order will be captured automatically.
-
-The option receipt is an optional one.
 
 The response that will be stored in the order variable is structured like this
 
@@ -108,7 +107,7 @@ end
 ```
 
 1. Return back the order response to the client-side application with the needed values. Order&#39;s id and amount\_due is mandatory as that will be needed to show the Razorpay pop-up.
-2. The client side will make the payment against the given order\_id and Razorpay will generate **razorpay\_payment\_id**,  **razorpay\_order\_id** and **razorpay\_signature** and send it to the client side callback or handler function. You can request the payment\_response from the client side to verify the payment using the method provided by Razorpay to verify the payment like so
+2. The client side will make the payment against the given order\_id and Razorpay will generate **razorpay\_payment\_id** and **razorpay\_signature** for the  **razorpay\_order\_id** created in the previous step and send it to the client side callback or handler function. You can request the payment\_response from the client side to verify the payment using the method provided by Razorpay to verify the payment like so
 
 &nbsp; &nbsp;  &nbsp;  &nbsp;  ```Razorpay::Utility.verify_payment_signature(payment_response)```
 
@@ -126,7 +125,7 @@ field:verifyRazorpayPayment, Types::Objects::OrderType do
 
 		fetched_order = Razorpay::Order.fetch(cart.razorpay_order_id)
 
-		order = cart.create_gehna_order(fetched_order)
+		order = cart.create_platform_order(fetched_order)
 
 		order
 	}
@@ -148,25 +147,14 @@ def create_gehna_order(fetched_order)
 
 		Order.transaction do
 
-			order = Order.new.initialize_new_order(self, fetched_order)
+			# Create your order
 
-			order.property_map(self)
-
-			order_creation_status = order.create_order('', '', self.billing_address.id, self.shipping_address.id)
-
-			order.set_mailchimp_order
 
 		end
-
-		self.mailchimp_cart_delete
-
-		order
 
 	else
 
 		raise Exceptions::PaymentFailed
-
-		self.apply_or_remove_emi(nil)
 
 	end
 
@@ -174,7 +162,6 @@ end
 
 ```
 
-1. Create a method to process the order and pass the fetched\_order. Inside this method check if the status of the order is &#39;paid&#39; *(fetched\_order.status == &#39;paid&#39;)*, if so then go ahead with the order creation.
 
 
 ## _Webhooks_
@@ -207,7 +194,8 @@ Watch the short video below for more details. [Razorpay webhook setup](https://y
 1. Add a post route in **routes.rb** that will listen for the webhook events.
 
 ``` 
-post "/webhooks/process/:webhook_source",  controller::webhooks, action::process 
+post "/webhooks/process/:webhook_source",  controller: :webhooks, action: :process 
+
 ```
 
 1. Create a controller for this route which will handle the webhook event and also manage in case the particular webhook fires multiple times to avoid multiple order creation for the same webhook event. We&#39;ll need a model to store the webhook events which is discussed in later steps.
@@ -221,7 +209,7 @@ class WebhooksController < ApplicationController
 
 	when 'razorpay'
 
-		Razorpay::Utility.verify_webhook_signature(request.raw_post, request.headers["X-Razorpay-Signature"], Rails.application.credentials[Rails.env.to_sym][:razorpay_webhook_signature])
+		Razorpay::Utility.verify_webhook_signature(request.raw_post, request.headers["X-Razorpay-Signature"], Rails.application.credentials.dig(Rails.env.to_sym,:razorpay_webhook_signature)
 
 		webhook_event = WebhookEvent.find_by(webhook_event_id:  request.headers['x-razorpay-event-id'])
 
