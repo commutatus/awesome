@@ -74,7 +74,7 @@ The response that will be stored in the order variable is structured like this
 
 ```
 
-**Make sure to store**  **the id**  **that&#39;s returned by razorpay in this step in the database as this will be used to verify and fetch Cart or whatever you&#39;re making the order for.**
+**Make sure to store the id  that&#39;s returned by razorpay in this step in the database as this will be used to verify and fetch Cart or whatever you&#39;re making the order for.**
 
 
 1. Write a mutation that the FE will hit to create a Razorpay Order.
