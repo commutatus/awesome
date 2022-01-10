@@ -28,7 +28,7 @@ grand_parent: Engineering
 	``` ruby
 	require 'razorpay'
 
-	Razorpay.setup(Rails.application.credentials.dig(:razorpay_key_id),Rails.application.credentials.dig(Rails.env.to_sym,:razorpay_secret_token)
+	Razorpay.setup(Rails.application.credentials.dig(:razorpay_key_id),Rails.application.credentials.dig(:razorpay_secret_token)
 	```
 
 4. Next, create a module called **razorpay\_payment.rb** inside the concerns folder, here generate the Razorpay Order like so
