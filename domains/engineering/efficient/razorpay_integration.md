@@ -23,12 +23,12 @@ grand_parent: Engineering
 
 1. Open the rails credentials and put the **key\_id** and **key\_secret** obtained in the previous step under test, development and staging environments.
 2. In the Gemfile add the gem **razorpay** and do **bundle install**.
-3. Create a file inside the ```config/initializers``` folder called **razorpay.rb**. Here require the razorpay library and set it up like so
+3. Create a file inside the `config/initializers` folder called **razorpay.rb**. Here require the razorpay library and set it up like so
 
 	``` ruby
 	require 'razorpay'
 
-	Razorpay.setup(Rails.application.credentials.dig(Rails.env.to_sym, :razorpay_key_id),Rails.application.credentials.dig(Rails.env.to_sym,:razorpay_secret_token)
+	Razorpay.setup(Rails.application.credentials.dig(:razorpay_key_id),Rails.application.credentials.dig(Rails.env.to_sym,:razorpay_secret_token)
 	```
 
 4. Next, create a module called **razorpay\_payment.rb** inside the concerns folder, here generate the Razorpay Order like so
@@ -70,11 +70,11 @@ The response that will be stored in the order variable is structured like this
 	``` ruby
 	field:createRazorpayOrder, Types::Objects::RazorpayOrderResponseType do
 		description "Create a Razorpay order for checkout"
-		argument:cart_id, !types.String
+		argument:cart_uuid, !types.String
 
 		resolve -> (_, args, _) {
 			order_response = []
-			cart = Cart.find_by(uuid:args[:cart_id])
+			cart = Cart.find_by(uuid:args[:cart_uuid])
 			raise Exceptions::InvalidCartId.new("Cart not found") if cart.nil?
 			order_response = cart.find_or_create_razorpay_order()
 			order_response
@@ -94,17 +94,17 @@ The response that will be stored in the order variable is structured like this
 	``` ruby
 	field:verifyRazorpayPayment, Types::Objects::OrderType do
 		description "Verify a Razorpay payment"
-		argument:cart_id, !types.String
+		argument:cart_uuid, !types.String
 
 		resolve -> (_, args, _) {
-			cart = Cart.find_by(uuid:args[:cart_id])
+			cart = Cart.find_by(uuid:args[:cart_uuid])
 			fetched_order = Razorpay::Order.fetch(cart.razorpay_order_id)
 			order = cart.create_platform_order(fetched_order)
 			order
 		}
 	end
 	```
-**Note:** Make sure to have only one method for creating an order or subscription which also will contain the verification of the payment. If ```the fetched_order``` status is **paid** then proceed. This single method could be reused when webhooks will be implemented.
+**Note:** Make sure to have only one method for creating an order or subscription which also will contain the verification of the payment. If `the fetched_order` status is **paid** then proceed. This single method could be reused when webhooks will be implemented.
 
 	``` ruby
 	def create_platform_order(fetched_order)
@@ -166,7 +166,7 @@ Watch the short video below for more details. [Razorpay webhook setup](https://y
 		def process(webhook_source)
 			case params[:webhook_source]
 			when 'razorpay'
-				Razorpay::Utility.verify_webhook_signature(request.raw_post, request.headers["X-Razorpay-Signature"], Rails.application.credentials.dig(Rails.env.to_sym,:razorpay_webhook_signature)
+				Razorpay::Utility.verify_webhook_signature(request.raw_post, request.headers["X-Razorpay-Signature"], Rails.application.credentials.dig(:razorpay_webhook_signature)
 				webhook_event = WebhookEvent.find_by(webhook_event_id:  request.headers['x-razorpay-event-id'])
 				process_razorpay(params, request) if webhook_event.nil?
 			end
@@ -217,19 +217,19 @@ Watch the short video below for more details. [Razorpay webhook setup](https://y
 8. Fetch the razorpay order id from the webhook payload
 
 	``` ruby
-	razorpay_order_id = payload['payload']['order']['entity']['id']
+	razorpay_order_id = payload.dig('payload', 'order', 'entity', 'id')
 	```
 
 9. Using this order id find the cart and then go ahead with the creation of the product order or subscription.
 
 	``` ruby
 	def handle_razorpay_order_paid
-		razorpay_order_id = payload["payload"]["order"]["entity"]["id"]
+		razorpay_order_id = payload.dig('payload', 'order', 'entity', 'id')
 
-		cart = Cart.find_by(razorpay_order_id:razorpay_order_id) 
+		cart = Cart.find_by(razorpay_order_id: razorpay_order_id) 
 		if cart
 			fetched_order = Razorpay::Order.fetch(cart.razorpay_order_id)
-			cart.create_gehna_order(fetched_order)
+			cart.create_platform_order(fetched_order)
 		end
 	end
 	```
@@ -248,8 +248,8 @@ Watch the short video below for more details. [Razorpay webhook setup](https://y
 
 5. To generate live keys switch to &#39;live mode&#39; and follow the instructions given in Prerequisites step 2.
 
-### Note:
+**Note:**
 
 - For more information you can check out the official Razorpay documentation in this link
 
-[https://razorpay.com/docs/payment-gateway/web-integration/standard/](https://razorpay.com/docs/payment-gateway/web-integration/standard/)
+	[https://razorpay.com/docs/payment-gateway/web-integration/standard/](https://razorpay.com/docs/payment-gateway/web-integration/standard/)
