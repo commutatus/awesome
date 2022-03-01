@@ -24,18 +24,7 @@ A constant that is required in multiple places in the code should be defined by 
 - When they minimise the readability of the code.
 
 ## Handling constants in ROR:
-1. **SCSS constants**
-  - Constants should be assigned to variables in a separate SCSS file which can be present in the ‘base’ folder.\
-  Example:
-    ```
-    app/assets/stylesheets/base/_variables.scss
-    ```
-  - To make these variables available for use in another SCSS file, add this on the first line: 
-    ```ruby 
-    @import "base/_variables.scss";
-    ```
-
-2. **Ruby constants**
+**Ruby constants**
   - A constant that is to be used in the codebase across different files and folders can be defined inside a suitable model to make it globally available.
   - To define such a constant make sure the variable name is all uppercase.\
   Example:
@@ -60,9 +49,6 @@ A constant that is required in multiple places in the code should be defined by 
 
 2. **Constants**
   - Design system constants from SCSS. eg: color hexes, screen widths, etc.
-  - ```javascript
-    @import "@styles/design-system.scss";
-    ```
   - Break these down into scoped files under a folder called constants.
   - These can contain :
           1. Redirects\
@@ -77,7 +63,7 @@ permanent: false,
           2. Persistence, performance, variants, etc.
 
 ## Handling constants in Angular:
-1. **Javascript constants**
+**Javascript constants**
   - Constants can be defined in a `constants.ts` file which exports each constant individually.
   - Global constants: Place these constants in the root folder.
   - Component level constants: Place these in a separate constants file in the component root.
@@ -90,16 +76,18 @@ permanent: false,
     ```javascript
     import { FOO } from '../constants';
     ```
-    
-2. **SCSS constants**
-  - Each type of constant resides in a separate file. For example, `variables.scss`, `helpers.scss`, `mixins.scss`, etc.
-  - These files can be imported in a `global.scss` file so that they can be accessed anywhere in the app.
-  - Similar to JS constants, components and modules can have local constants as well.
-  - Example export: 
-    ```javascript
-    $extra-dim-grey: #ECECEC;
+
+## Handling SCSS constants:
+  - Constants can be defined in SCSS in a ‘partial’ file, preferably placed in a base-level folder of the directory in which the application's stylesheets are stored.\
+  Example - defining a constant:
+  ```scss
+  $yellow-primary: #FFCC00;
+  ```
+  - It is recommended to place different categories of variables in separate files and name them accordingly.\
+    Example: `_fonts.scss`, `_color_swatches.scss`, `_mixins.scss`
+  - The variables defined in these files can be used in other SCSS files by importing them.\
+    Example - import: 
+    ```scss
+    @import '../_fonts.scss';
     ```
-  - Example import: 
-    ```javascript
-    @import '../variables.scss';
-    ```
+  - We can also import all the constant containing partials into a ‘global’ SCSS file, which in turn can be imported wherever required.
